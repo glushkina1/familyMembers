@@ -4,7 +4,7 @@ import {
     TextInput,
     TouchableOpacity,
     View,
-    Text,
+    Text, Button,
 } from 'react-native';
 import {NavigationContainer} from "@react-navigation/native";
 import {createStackNavigator} from '@react-navigation/stack';
@@ -33,7 +33,8 @@ function NewMemberScreen({navigation}) {
     let person: Person | undefined = undefined;
     const [personName, setPersonName] = useState(person ? person.name : '');
     const [personRelationship, setPersonRelationship] = useState(person ? person.relationship : '');
-    const genders = ['male', 'female', 'non-binary gender'];
+    const [personSex, setPersonSex] = useState(person? person.sex: '')
+    // const genders = ['male', 'female', 'non-binary gender'];
     // const [personPicture, setPersonPicture] = useState(person ? person.picture : '')
     const [showError, setShowError] = useState(false);
 
@@ -44,6 +45,7 @@ function NewMemberScreen({navigation}) {
         } else {
             if (person) {
                 person.name = name;
+                person.sex = sex;
                 updatePerson(name)
             }
         }
@@ -66,6 +68,16 @@ function NewMemberScreen({navigation}) {
 
 
             {showError && <Text style={{ color: 'red' }}>Error, fill in all the fields</Text>}
+            <View style={styles.genderContainer}>
+                <Button title={'male'} onPress={setPersonSex('male')} />
+                <Button title={'female'} onPress={setPersonSex('female')} />
+            </View>
+
+
+
+
+
+
             <View style={styles.buttonsContainer}>
                 <TouchableOpacity onPress={() => savePerson(person)}>
                     <Text style={styles.saveButton}>
@@ -145,6 +157,9 @@ const styles = StyleSheet.create({
         fontFamily:'bold',
         fontSize:22,
     },
+    genderContainer:{
+        flexDirection:'row',
+    }
 });
 
 
