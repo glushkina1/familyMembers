@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {
-    Button,
     StyleSheet,
     TextInput,
     TouchableOpacity,
@@ -11,9 +10,7 @@ import {NavigationContainer} from "@react-navigation/native";
 import {createStackNavigator} from '@react-navigation/stack';
 import {Person, savePerson, updatePerson} from "./store/MemberStore";
 import {Ionicons} from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import PersonComponent from './Person'
-import {ButtonGroup} from "react-native-elements";
 
 const Stack = createStackNavigator();
 
@@ -47,10 +44,7 @@ function NewMemberScreen({navigation}) {
         } else {
             if (person) {
                 person.name = name;
-                // person.relationship = rela
                 updatePerson(name)
-            } else {
-                savePerson(name)
             }
         }
     }
@@ -68,23 +62,19 @@ function NewMemberScreen({navigation}) {
                 onChangeText={text => setPersonRelationship(text)}
                 style={styles.inputRelationship}
             />
-            <ButtonGroup
-                buttons = {genders}
-                containerStyle={{height: 70, justifyContent:'flex-end',  }}
-            />
+
 
 
             {showError && <Text style={{ color: 'red' }}>Error, fill in all the fields</Text>}
             <View style={styles.buttonsContainer}>
                 <TouchableOpacity onPress={() => savePerson(person)}>
                     <Text style={styles.saveButton}>
-                        Save
+                        save
                     </Text>
                 </TouchableOpacity>
-
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Text style={styles.cancelButton}>
-                        Back
+                        back
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -109,7 +99,6 @@ const styles = StyleSheet.create({
     homeScreen: {
         flex: 1,
         alignItems: 'center',
-        marginTop:30,
         backgroundColor: '#E8EAED'
     },
     newMemberScreen:{
@@ -138,20 +127,23 @@ const styles = StyleSheet.create({
         right: 10,
     },
     buttonsContainer:{
-        width:85,
-        height:25,
+        width:105,
+        minHeight:40,
         alignItems: 'center',
         justifyContent: 'space-around',
         flexDirection:'row',
     },
-    eachButtonStyle:{
-        fontSize:30,
-    },
     saveButton:{
-        color:'#90EE90',
+        backgroundColor:'#90EE90',
+        fontFamily:'bold',
+        fontSize:22,
+        color:'white',
     },
     cancelButton:{
-        color:'#DC143C',
+        color:'white',
+        backgroundColor:'#DC143C',
+        fontFamily:'bold',
+        fontSize:22,
     },
 });
 
