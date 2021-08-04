@@ -1,0 +1,5 @@
+
+
+export const SET_MEMBERS = 'SET_MEMBERS';
+
+export const SET_ACTIVE_MEMBER_ID = 'SET_ACTIVE_MEMBER_ID';

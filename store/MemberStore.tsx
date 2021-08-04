@@ -6,7 +6,7 @@ export interface Person {
     sex: string;
     relationship: string;
     picture: string;
-    distance: string;
+    // distance: string;
 }
 
     export const savePerson = async (Person) => {
@@ -19,7 +19,7 @@ export interface Person {
     }
 
 
-    export const updatePerson = async (Person) => {
+    export const getPerson = async () => {
         try {
             const jsonValue = await AsyncStorage.getItem('@storage_Key')
             return jsonValue != null ? JSON.parse(jsonValue) : null;
@@ -27,4 +27,6 @@ export interface Person {
             console.log(e)
         }
     }
+
+
 

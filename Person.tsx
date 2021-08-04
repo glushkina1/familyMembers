@@ -8,12 +8,18 @@ const PersonComponent = (props) => {
         <Text style={styles.infoStyle}>
             if you dont see a picture here, you are a gay
         </Text>
-            <Text style={styles.infoStyle}>
-                {props.text}
-            </Text>
-            <Text style={styles.infoStyle}>
-                {props.personSex}
-            </Text>
+        <Text style={styles.infoStyle}>
+            {props.text}
+        </Text>
+        <Text style={styles.infoStyle}>
+            {props.personSex}
+        </Text>
+        <Text style={styles.infoStyle}>
+            fucker
+        </Text>
+        <Text style={styles.infoStyle}>
+            100 metrov away
+        </Text>
     </View>
     )
 }
