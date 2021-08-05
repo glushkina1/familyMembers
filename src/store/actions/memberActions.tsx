@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {SET_MEMBERS} from "../types";
-import {RootState} from "../index";
+import {RootState, store} from "../index";
 import {STORAGE_KEYS} from "../../../constans";
 
 
@@ -24,16 +24,19 @@ export const getMembers = (onSuccess = () => {}, onError = () => {}) => {
 };
 
 // Create new member
-export const createMember = (name, onSuccess = () => {}, onError = () => {}, state: RootState) => {
+export const createMember = (name, onSuccess = () => {}, onError = () => {}) => {
     return async dispatch => {
         try {
             const newMember = {
                 name: name,
                 id: `member-${new Date().getTime()}`
             };
-            const {members} = state.members;
+            const {members} = store.getState().members;
             const membersCope = [...members];
             membersCope.push(newMember);
+
+            console.log('ADDING');
+            console.log(membersCope);
             await AsyncStorage.setItem(STORAGE_KEYS.members, JSON.stringify(membersCope));
             dispatch({
                 type: SET_MEMBERS,

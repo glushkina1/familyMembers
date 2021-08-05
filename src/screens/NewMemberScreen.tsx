@@ -1,33 +1,31 @@
-import React, {useState, useEffect} from 'react';
-import {StyleSheet, TextInput, TouchableOpacity, View, Text, Button} from 'react-native';
-import { useDispatch } from 'react-redux';
+import React, {useEffect, useState} from 'react';
+import {Button, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {useDispatch} from 'react-redux';
 import {useAppSelector} from "../hooks";
+import {createMember} from "../store/actions/memberActions";
 
 const NewMemberScreen = ({ route, navigation }) => {
-    const [person, setPerson] = useState({});
     const [personName, setPersonName] = useState('');
     const [personRelationship, setPersonRelationship] = useState('');
     const [personSex, setPersonSex] = useState('')
     // const [personPicture, setPersonPicture] = useState(person ? person.picture : '')
     const [showError, setShowError] = useState(false);
-    const dispatch = useDispatch();
     const { members } = useAppSelector(state => state.members);
-
-
-    useEffect(() => {
-        const memberFound = members.find(t => t.id === route.params.id);
-        if (memberFound) {
-            setPersonName(memberFound.name);
-            setPerson(memberFound);
-            // setLoading(false);
-        }
-    }, [members, route.params.id]);
-
-    const addPerson = () => {
-
+    const dispatch = useDispatch();
+    
+    if (members.length > 0 && route.params) {
+        useEffect(() => {
+            const memberFound = members.find(t => t.id === route.params.id);
+            if (memberFound) {
+                setPersonName(memberFound.name);
+                // setLoading(false);
+            }
+        }, [members, route.params.id]);
     }
 
-
+    const addPerson = () => {
+        dispatch(createMember(personName, navigation.navigate('My family'), null));
+    }
 
     return (
         // <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>

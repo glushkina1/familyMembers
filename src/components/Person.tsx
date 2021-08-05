@@ -1,18 +1,39 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { TextInput, View, Text, StyleSheet} from "react-native";
+import {useAppSelector} from "../hooks";
 
 
 const PersonComponent = (props) => {
+
+    const { members } = useAppSelector(state => state.members);
+    console.log(members);
+
+    const renderList  = () => {
+        const list = members.map(member => {
+            return (
+                <View style={styles.personComponentStyle}>
+                    <Text key={member.id}>{member.name}</Text>
+                </View>
+            );
+        });
+
+        return (
+            <View>
+                {list}
+            </View>
+        );
+    }
+
     return (
     <View style={styles.personComponentStyle}>
         <Text style={styles.infoStyle}>
             if you dont see a picture here, you are a gay
         </Text>
         <Text style={styles.infoStyle}>
-            {props.text}
+
         </Text>
         <Text style={styles.infoStyle}>
-            {props.personSex}
+
         </Text>
         <Text style={styles.infoStyle}>
             fucker
@@ -20,6 +41,7 @@ const PersonComponent = (props) => {
         <Text style={styles.infoStyle}>
             100 metrov away
         </Text>
+        {renderList()}
     </View>
     )
 }
