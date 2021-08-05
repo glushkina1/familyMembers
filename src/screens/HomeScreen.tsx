@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
-import {useDispatch} from 'react-redux';
 import {Ionicons} from '@expo/vector-icons';
 import PersonComponent from '../components/Person'
 import {getMembers} from "../store/actions/memberActions";
+import {useAppDispatch} from "../store";
 
 const HomeScreen = ({navigation}) => {
     const [loading, setLoading] = useState(true);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         dispatch(getMembers(() => setLoading(false)));

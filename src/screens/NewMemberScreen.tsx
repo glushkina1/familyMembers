@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Button, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {useDispatch} from 'react-redux';
-import {useAppSelector} from "../hooks";
+import {useAppSelector} from "../store";
 import {createMember} from "../store/actions/memberActions";
 
 const NewMemberScreen = ({ route, navigation }) => {

@@ -1,6 +1,6 @@
-import React, {useEffect} from "react";
-import { TextInput, View, Text, StyleSheet} from "react-native";
-import {useAppSelector} from "../hooks";
+import React from "react";
+import { View, Text, StyleSheet} from "react-native";
+import {useAppSelector} from "../store";
 
 
 const PersonComponent = (props) => {
