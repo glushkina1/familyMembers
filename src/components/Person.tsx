@@ -1,18 +1,18 @@
-import React, {useEffect} from "react";
-import { TextInput, View, Text, StyleSheet} from "react-native";
+import React from "react";
+import { View, Text, StyleSheet} from "react-native";
 import {useAppSelector} from "../hooks";
 
 
-const PersonComponent = (props) => {
+const PersonComponent = () => {
 
-    const { members } = useAppSelector(state => state.members);
+    const { members } = useAppSelector(state => state.member);
     console.log(members);
 
     const renderList  = () => {
         const list = members.map(member => {
             return (
                 <View style={styles.personComponentStyle}>
-                    <Text key={member.id}>{member.name}</Text>
+                    <Text>{member.name}</Text>
                 </View>
             );
         });

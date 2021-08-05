@@ -3,7 +3,7 @@ import { configureStore } from '@reduxjs/toolkit'
 
 export const store = configureStore({
     reducer: {
-        members: memberReducer,
+        member: memberReducer,
     }
 })
 

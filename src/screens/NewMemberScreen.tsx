@@ -10,9 +10,9 @@ const NewMemberScreen = ({ route, navigation }) => {
     const [personSex, setPersonSex] = useState('')
     // const [personPicture, setPersonPicture] = useState(person ? person.picture : '')
     const [showError, setShowError] = useState(false);
-    const { members } = useAppSelector(state => state.members);
+    const { members } = useAppSelector(state => state.member);
     const dispatch = useDispatch();
-    
+
     if (members.length > 0 && route.params) {
         useEffect(() => {
             const memberFound = members.find(t => t.id === route.params.id);
