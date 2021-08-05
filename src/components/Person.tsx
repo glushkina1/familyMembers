@@ -1,11 +1,11 @@
-import React from "react";
-import { View, Text, StyleSheet} from "react-native";
+import React, {useEffect} from "react";
+import { TextInput, View, Text, StyleSheet} from "react-native";
 import {useAppSelector} from "../hooks";
 
 
 const PersonComponent = () => {
 
-    const { members } = useAppSelector(state => state.member);
+    const { members } = useAppSelector(state => state.members);
     console.log(members);
 
     const renderList  = () => {
