@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {SET_MEMBERS} from "../types";
-import store from "../index";
-import {STORAGE_KEYS} from "../../constans";
+import {RootState} from "../index";
+import {STORAGE_KEYS} from "../../../constans";
 
 
 // Get Members
@@ -24,15 +24,14 @@ export const getMembers = (onSuccess = () => {}, onError = () => {}) => {
 };
 
 // Create new member
-export const createMember = (name, onSuccess = () => {}, onError = () => {}) => {
+export const createMember = (name, onSuccess = () => {}, onError = () => {}, state: RootState) => {
     return async dispatch => {
         try {
             const newMember = {
-                name,
-                id: `member-${new Date().getTime()}`,
-                completed: false,
+                name: name,
+                id: `member-${new Date().getTime()}`
             };
-            const {members} = store.getState().member;
+            const {members} = state.members;
             const membersCope = [...members];
             membersCope.push(newMember);
             await AsyncStorage.setItem(STORAGE_KEYS.members, JSON.stringify(membersCope));
@@ -48,10 +47,10 @@ export const createMember = (name, onSuccess = () => {}, onError = () => {}) => 
     }
 };
 // Update member
-    export const updateMember = (member, onSuccess = () => {}, onError = () => {}) => {
+    export const updateMember = (member, onSuccess = () => {}, onError = () => {}, state: RootState) => {
         return async dispatch => {
             try {
-                const { members } = store.getState().members;
+                const { members } = state.members;
                 const updatedMembers = [...members].map(t => t.id === member.id ? member : t);
                 await AsyncStorage.setItem(STORAGE_KEYS.members, JSON.stringify(updatedMembers));
 
@@ -68,10 +67,10 @@ export const createMember = (name, onSuccess = () => {}, onError = () => {}) => 
 }
 
 // Delete member
-export const deleteMember = (id, onSuccess = () => {}, onError = () => {}) => {
+export const deleteMember = (id, onSuccess = () => {}, onError = () => {}, state: RootState) => {
     return async dispatch => {
         try {
-            const { members } = store.getState().member;
+            const { members } = state.members;
             const updatedMembers = [...members].filter(t => t.id !== id);
             await AsyncStorage.setItem(STORAGE_KEYS.members, JSON.stringify(updatedMembers));
 

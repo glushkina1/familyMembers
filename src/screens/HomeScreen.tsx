@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
-import {Provider, useDispatch} from 'react-redux';
-import {NavigationContainer} from "@react-navigation/native";
-import {createStackNavigator} from '@react-navigation/stack';
-import {Person, savePerson, getPerson} from "../store/MemberStore";
+import { View, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import {useDispatch} from 'react-redux';
 import {Ionicons} from '@expo/vector-icons';
-import PersonComponent from '../Person'
+import PersonComponent from '../../Person'
 import {getMembers} from "../store/actions/memberActions";
 
 const HomeScreen = ({navigation}) => {

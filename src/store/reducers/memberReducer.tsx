@@ -1,11 +1,10 @@
-import { useSelector } from "react-redux";
 import {SET_MEMBERS} from "../types";
 
 const initialState = {
     members: [],
 };
 
-const memberReducer = (state = initialState, action) => {
+const memberReducer = (state= initialState, action) => {
     switch (action.type) {
         case 'SET_MEMBERS':
             return {
@@ -15,6 +14,5 @@ const memberReducer = (state = initialState, action) => {
             return state;
     }
 }
-export type RootState = ReturnType<typeof memberReducer>
 
 export default memberReducer;

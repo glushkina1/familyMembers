@@ -1,14 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {
-    StyleSheet,
-    TextInput,
-    TouchableOpacity,
-    View,
-    Text, Button, TouchableWithoutFeedback, Keyboard
-} from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-
-
+import {StyleSheet, TextInput, TouchableOpacity, View, Text, Button} from 'react-native';
+import { useDispatch } from 'react-redux';
+import {useAppSelector} from "../hooks";
 
 const NewMemberScreen = ({ route, navigation }) => {
     const [person, setPerson] = useState({});
@@ -18,7 +11,7 @@ const NewMemberScreen = ({ route, navigation }) => {
     // const [personPicture, setPersonPicture] = useState(person ? person.picture : '')
     const [showError, setShowError] = useState(false);
     const dispatch = useDispatch();
-    const { members } = useSelector(state => state.member);
+    const { members } = useAppSelector(state => state.members);
 
 
     useEffect(() => {
