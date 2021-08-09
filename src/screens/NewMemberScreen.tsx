@@ -1,34 +1,29 @@
 import React, {useEffect, useState} from 'react';
 import {Button, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
-import {useDispatch} from 'react-redux';
-import {useAppSelector} from "../store";
-import {createMember} from "../store/actions/memberActions";
+import {useAppSelector, useAppDispatch} from "../store";
+import {createMember, deleteMember, updateMember} from "../store/actions/memberActions";
 
-const NewMemberScreen = ({ route, navigation }) => {
+const NewMemberScreen = ({ route, navigation}) => {
     const [personName, setPersonName] = useState('');
     const [personRelationship, setPersonRelationship] = useState('');
     const [personSex, setPersonSex] = useState('')
     // const [personPicture, setPersonPicture] = useState(person ? person.picture : '')
     const [showError, setShowError] = useState(false);
     const { members } = useAppSelector(state => state.member);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
-    if (members.length > 0 && route.params) {
-        useEffect(() => {
-            const memberFound = members.find(t => t.id === route.params.id);
-            if (memberFound) {
-                setPersonName(memberFound.name);
-                // setLoading(false);
-            }
-        }, [members, route.params.id]);
-    }
+
 
     const addPerson = () => {
-        dispatch(createMember(personName, navigation.navigate('My family'), null));
+        if (personName && personRelationship && personSex) {
+            dispatch(createMember(personName, personRelationship, personSex, navigation.navigate('My family'), null));
+        } else {
+            setShowError(true)
+        }
     }
 
+
     return (
-        // <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={styles.newMemberScreen}>
                 <TextInput
                     placeholder="Person's name"
@@ -62,7 +57,6 @@ const NewMemberScreen = ({ route, navigation }) => {
                     </TouchableOpacity>
                 </View>
             </View>
-        // </TouchableWithoutFeedback>
     );
 
 

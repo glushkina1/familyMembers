@@ -5,7 +5,7 @@ import PersonComponent from '../components/Person'
 import {getMembers} from "../store/actions/memberActions";
 import {useAppDispatch} from "../store";
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({route, navigation}) => {
     const [loading, setLoading] = useState(true);
     const dispatch = useAppDispatch();
 
@@ -19,7 +19,7 @@ const HomeScreen = ({navigation}) => {
 
     return (
         <View style={styles.homeScreen}>
-            <PersonComponent text={'Popa'} personSex={'male'}/>
+            <PersonComponent navigation={navigation} route={route}/>
             <View style={styles.buttonPlus}>
                 <TouchableOpacity onPress={() => navigation.navigate('New Member')}>
                     <Ionicons name='add-circle-outline' size={60} color="blue"/>
