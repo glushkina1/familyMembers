@@ -1,6 +1,6 @@
-import React, {useEffect} from "react";
+import React from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Button} from "react-native";
-import {useAppSelector, useAppDispatch} from "../store";
+import {useAppSelector} from "../store";
 import {useDispatch} from "react-redux";
 import {deleteMember, updateMember} from "../store/actions/memberActions";
 import {Ionicons} from "@expo/vector-icons";
@@ -9,12 +9,10 @@ import {Ionicons} from "@expo/vector-icons";
 const PersonComponent = ({route, navigation}) => {
     const dispatch = useDispatch();
     const { members } = useAppSelector(state => state.member);
-    const updatedMembers = [...members].filter(mem => mem.id !== "member-1628542183812");
-    console.log(updatedMembers)
-
+    console.log({ members })
 
     const updateMemberHandler = (member) => {
-        dispatch(updateMember(member.id, () => navigation.navigate('New Member', {id: member.id}), null))
+        dispatch(updateMember(member, () => navigation.navigate('New Member', {id: member.id}), null))
     }
     const deleteMemberHandler = (id) => {
         dispatch(deleteMember(id, () => navigation.navigate('My family'), null))
@@ -26,7 +24,7 @@ const PersonComponent = ({route, navigation}) => {
             data={members}
             keyExtractor={(member) => member.id}
             renderItem={({item}) => <TouchableOpacity onPress={() => updateMemberHandler(item)}>
-                <View style={{flexDirection:'row'}}>
+                <View style={{flexDirection:'row',justifyContent:'space-around', }}>
                 <Text style={styles.personInList}>
                     {item.name}
                 </Text>
@@ -36,9 +34,11 @@ const PersonComponent = ({route, navigation}) => {
                 <Text style={styles.personInList}>
                     {item.sex}
                 </Text>
+                <View style={styles.buttonCancel}>
                     <TouchableOpacity onPress={() => deleteMemberHandler(item.id)}>
                         <Ionicons name='close' size={17} color="red"/>
                     </TouchableOpacity>
+                </View>
             </View>
             </TouchableOpacity>
             }
@@ -64,6 +64,8 @@ const styles = StyleSheet.create({
     },
     infoStyle:{
         fontSize:22,
+    },
+    buttonCancel: {
     },
 })
 

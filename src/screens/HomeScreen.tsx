@@ -6,8 +6,10 @@ import {getMembers} from "../store/actions/memberActions";
 import {useAppDispatch} from "../store";
 
 const HomeScreen = ({route, navigation}) => {
+
     const [loading, setLoading] = useState(true);
     const dispatch = useAppDispatch();
+
 
     useEffect(() => {
         dispatch(getMembers(() => setLoading(false)));
@@ -21,7 +23,7 @@ const HomeScreen = ({route, navigation}) => {
         <View style={styles.homeScreen}>
             <PersonComponent navigation={navigation} route={route}/>
             <View style={styles.buttonPlus}>
-                <TouchableOpacity onPress={() => navigation.navigate('New Member')}>
+                <TouchableOpacity onPress={() => navigation.navigate('New Member',{id: 0})}>
                     <Ionicons name='add-circle-outline' size={60} color="blue"/>
                 </TouchableOpacity>
             </View>

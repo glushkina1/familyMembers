@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Button, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {useAppSelector, useAppDispatch} from "../store";
-import {createMember, deleteMember, updateMember} from "../store/actions/memberActions";
+import {createMember} from "../store/actions/memberActions";
 
 const NewMemberScreen = ({ route, navigation}) => {
     const [personName, setPersonName] = useState('');
@@ -12,6 +12,14 @@ const NewMemberScreen = ({ route, navigation}) => {
     const { members } = useAppSelector(state => state.member);
     const dispatch = useAppDispatch();
 
+    useEffect(() => {
+        const memberFound = members.find(mem => mem.id === route.params.id);
+        if (memberFound) {
+            setPersonName(memberFound.name);
+            setPersonSex(memberFound.sex);
+            setPersonRelationship(memberFound.relationship);
+        }
+    }, [members, route.params.id]);
 
 
     const addPerson = () => {
