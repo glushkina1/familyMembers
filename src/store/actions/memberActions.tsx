@@ -5,7 +5,9 @@ import {STORAGE_KEYS} from "../../constans";
 
 
 // Get Members
-export const getMembers = (onSuccess = () => {}, onError = () => {}) => {
+export const getMembers = (onSuccess = () => {
+}, onError = () => {
+}) => {
     return async dispatch => {
         try {
             const membersRes = await AsyncStorage.getItem(STORAGE_KEYS.members);
@@ -24,7 +26,9 @@ export const getMembers = (onSuccess = () => {}, onError = () => {}) => {
 };
 
 // Create new member
-export const createMember = (name, relationship, sex, onSuccess = () => {}, onError = () => {}) => {
+export const createMember = (name, relationship, sex, image, onSuccess = () => {
+}, onError = () => {
+}) => {
     return async dispatch => {
         try {
             const newMember = {
@@ -32,7 +36,7 @@ export const createMember = (name, relationship, sex, onSuccess = () => {}, onEr
                 relationship: relationship,
                 sex: sex,
                 id: `member-${new Date().getTime()}`,
-                deleted: false,
+                image: image,
             };
             const {members} = store.getState().member;
             const membersCopy = [...members];
@@ -52,30 +56,36 @@ export const createMember = (name, relationship, sex, onSuccess = () => {}, onEr
     }
 };
 // Update member
-    export const updateMember = (member, onSuccess = () => {}, onError = () => {}) => {
-        return async dispatch => {
-            try {
-                const { members } = store.getState().member;
-                const updatedMembers = [...members].map(mem => mem.id === member.id ? member : mem);
-                await AsyncStorage.setItem(STORAGE_KEYS.members, JSON.stringify(updatedMembers));
+export const updateMember = (member, onSuccess = () => {
+}, onError = () => {
+}) => {
+    return async dispatch => {
+        try {
+            const {members} = store.getState().member;
 
-                dispatch({
-                    type: SET_MEMBERS,
-                    payload: updatedMembers,
-                });
-                onSuccess();
-            } catch (err) {
-                console.log(err);
-                onError();
-            }
-        };
+
+            const updatedMembers = [...members].map(mem => mem.id === member.id ? member : mem);
+            await AsyncStorage.setItem(STORAGE_KEYS.members, JSON.stringify(updatedMembers));
+
+            dispatch({
+                type: SET_MEMBERS,
+                payload: updatedMembers,
+            });
+            onSuccess();
+        } catch (err) {
+            console.log(err);
+            onError();
+        }
+    };
 }
 
 // Delete member
-export const deleteMember = (id, onSuccess = () => {}, onError = () => {}) => {
+export const deleteMember = (id, onSuccess = () => {
+}, onError = () => {
+}) => {
     return async dispatch => {
         try {
-            const { members } = store.getState().member;
+            const {members} = store.getState().member;
             const updatedMembers = [...members].filter(mem => mem.id !== id);
             await AsyncStorage.setItem(STORAGE_KEYS.members, JSON.stringify(updatedMembers));
 

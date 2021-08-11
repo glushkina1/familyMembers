@@ -4,7 +4,7 @@ const initialState = {
     members: [],
 };
 
-const memberReducer = (state= initialState, action) => {
+const memberReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'SET_MEMBERS':
             return {
