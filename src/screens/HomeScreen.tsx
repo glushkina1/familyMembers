@@ -41,11 +41,14 @@ const HomeScreen = ({route, navigation}) => {
         textLocation = JSON.stringify(location);
     }
 
+    const coords = textLocation[0];
+    console.log(location)
+    console.log()
 
     return (
         <View style={styles.homeScreen}>
-            <Text>Ваша локация:  {"\n"}
-                {textLocation}
+            <Text>
+                Ваша локация:  {"\n"}
             </Text>
             <PersonComponent navigation={navigation} route={route}/>
             <View style={styles.buttonPlus}>
