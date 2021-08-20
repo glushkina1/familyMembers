@@ -7,6 +7,8 @@ import {Ionicons} from "@expo/vector-icons";
 
 
 const PersonComponent = ({route, navigation}) => {
+
+
     const dispatch = useDispatch();
     const {members} = useAppSelector(state => state.member);
 
@@ -41,9 +43,9 @@ const PersonComponent = ({route, navigation}) => {
                                 {item.sex}
                             </Text>
                         </View>
-                        <View style={styles.buttonCancel}>
+                        <View style={styles.personParams}>
                             <TouchableOpacity onPress={() => deleteMemberHandler(item.id)}>
-                                <Ionicons name='close' size={17} color="red"/>
+                                <Ionicons name='close-outline' size={28} color="#A9A9A9" />
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -59,16 +61,17 @@ const styles = StyleSheet.create({
         marginTop: 40,
         width: '90%',
         borderWidth: 1,
+        borderColor:'#696969',
         alignItems: 'center',
         justifyContent: 'center',
     },
     personImage: {
         width: 70,
-        height: 70
+        height: 70,
+        borderRadius: 45,
     },
     personParams: {
         minWidth: 120,
-        borderWidth: 1,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -76,7 +79,10 @@ const styles = StyleSheet.create({
     infoStyle: {
         fontSize: 22,
     },
-    buttonCancel: {},
+    // deletePersonStyle:{
+    //   position:'absolute',
+    //     marginRight:20,
+    // },
     allParamsPerson: {
         width: '90%',
         flexDirection: 'row',
