@@ -8,7 +8,6 @@ import {Ionicons} from "@expo/vector-icons";
 
 const PersonComponent = ({route, navigation}) => {
 
-
     const dispatch = useDispatch();
     const {members} = useAppSelector(state => state.member);
 
@@ -58,10 +57,11 @@ const PersonComponent = ({route, navigation}) => {
 }
 const styles = StyleSheet.create({
     personComponentStyle: {
+        padding:10,
         marginTop: 40,
-        width: '90%',
-        borderWidth: 1,
-        borderColor:'#696969',
+        width: '70%',
+        borderRadius:10,
+        backgroundColor:'#F8F8FF',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -79,11 +79,8 @@ const styles = StyleSheet.create({
     infoStyle: {
         fontSize: 22,
     },
-    // deletePersonStyle:{
-    //   position:'absolute',
-    //     marginRight:20,
-    // },
     allParamsPerson: {
+        marginTop:10,
         width: '90%',
         flexDirection: 'row',
         justifyContent: 'space-between',

@@ -1,13 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import * as Location from "expo-location";
 import {Text} from "react-native";
+import { positionstack_api_key } from "../../config.json"
 
 const City = () => {
-    let api_key = 'AIzaSyAqMaNkSRJH22vnZ14dy1EjggLJZ847A-Q';
-    let textLocation = 'Waiting..';
-    let regionName;
-    const [location, setLocation] = useState(null);
-    const [errorMsg, setErrorMsg] = useState(null);
+    const [regionName,setRegionName] = useState(null)
+    const [errorMsg, setErrorMsg] = useState('there is an error');
 
     useEffect(() => {
         (async () => {
@@ -17,37 +15,26 @@ const City = () => {
                     setErrorMsg('Permission to access location was denied');
                     return;
                 }
-                Location.setGoogleApiKey(api_key);
-
 
                 let {coords} = await Location.getCurrentPositionAsync();
-                setLocation(coords);
 
                 if (coords) {
                     let {longitude, latitude} = coords;
-
-                    regionName = await Location.reverseGeocodeAsync({
-                        longitude,
-                        latitude,
-                    });
+                    const res = await fetch(`http://api.positionstack.com/v1/reverse?access_key=${positionstack_api_key}&query=${latitude},${longitude}`);
+                    const resJson = await res.json();
+                    setRegionName(resJson);
                 }
-
-                textLocation = JSON.stringify(location);
                 return;
             } catch (errorMsg) {
-                textLocation = errorMsg;
-                console.log(errorMsg)
+                setErrorMsg(errorMsg)
                 return;
             }
         })();
     }, []);
 
-    console.log(location ?  regionName : 'pappy')
-
     return (
         <Text>
-            Your location:  {"\n"}
-            {location ? location.latitude : 'Waiting...'}
+            {regionName ? regionName.data[0].label : 'Waiting...'}
         </Text>
 
     )
