@@ -1,5 +1,5 @@
 import React from "react";
-import {View, Text, StyleSheet, FlatList, TouchableOpacity, Image} from "react-native";
+import {View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Platform, Dimensions} from "react-native";
 import {useAppSelector} from "../store";
 import {useDispatch} from "react-redux";
 import {deleteMember} from "../store/actions/memberActions";
@@ -7,13 +7,11 @@ import {Ionicons} from "@expo/vector-icons";
 
 
 const PersonComponent = ({route, navigation}) => {
-
     const dispatch = useDispatch();
     const {members} = useAppSelector(state => state.member);
 
-
     const updateMemberHandler = (member) => {
-        navigation.navigate('New Member', {id: member.id})
+        navigation.navigate('New Member', {id: member.id});
     }
     const deleteMemberHandler = (id) => {
         dispatch(deleteMember(id, () => navigation.navigate('My family'), null))
@@ -59,11 +57,21 @@ const styles = StyleSheet.create({
     personComponentStyle: {
         padding:10,
         marginTop: 40,
-        width: '70%',
         borderRadius:10,
-        backgroundColor:'#F8F8FF',
+        backgroundColor:'#fff',
         alignItems: 'center',
         justifyContent: 'center',
+        ...Platform.select({
+            ios: {
+                width: Dimensions.get('window').width
+            },
+            web: {
+                width: '60%',
+            },
+            android: {
+                width: Dimensions.get('window').width
+            }
+        }),
     },
     personImage: {
         width: 70,
@@ -71,17 +79,40 @@ const styles = StyleSheet.create({
         borderRadius: 45,
     },
     personParams: {
-        minWidth: 120,
+        ...Platform.select({
+            ios: {
+                width:10,
+            },
+            web: {
+                minWidth: 120,
+            },
+            android: {
+                width:30,
+            }
+        }),
         alignItems: 'center',
         justifyContent: 'center',
     },
-    textParams: {},
+    textParams: {
+
+    },
     infoStyle: {
         fontSize: 22,
     },
     allParamsPerson: {
+        ...Platform.select({
+            ios: {
+                width: Dimensions.get('window').width
+            },
+            web: {
+                width: '40%',
+            },
+            android: {
+                width: Dimensions.get('window').width
+            }
+        }),
+        marginLeft:30,
         marginTop:10,
-        width: '90%',
         flexDirection: 'row',
         justifyContent: 'space-between',
         height: 70

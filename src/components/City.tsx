@@ -34,9 +34,8 @@ const City = () => {
 
     return (
         <Text>
-            {regionName ? regionName.data[0].label : 'Waiting...'}
+            {regionName ? 'Your current location is: \n' + regionName.data[0].region + ', ' + regionName.data[0].country : 'Waiting...'}
         </Text>
-
     )
 }
 
