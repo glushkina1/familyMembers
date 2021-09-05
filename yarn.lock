@@ -1513,7 +1513,7 @@
   resolved "https://registry.yarnpkg.com/@firebase/app-types/-/app-types-0.7.0.tgz#c9e16d1b8bed1a991840b8d2a725fb58d0b5899f"
   integrity sha512-6fbHQwDv2jp/v6bXhBw2eSRbNBpxHcd1NBF864UksSMVIqIyri9qpJB1Mn6sGZE+bnDsSQBC5j2TbMxYsJQkQg==
 
-"@firebase/app@0.7.0":
+"@firebase/app@0.7.0", "@firebase/app@^0.7.0":
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@firebase/app/-/app-0.7.0.tgz#989e9f354951de2a8ac806f6e3fa0afd9f80b470"
   integrity sha512-l4Pd69re6JyjumQrl719dnY5JSKROSYda/0N2wzOhSzqg8DsZOIErr8+xj6QAE6BtNsoIEk7ma9WMS/2r02MhA==
@@ -1614,7 +1614,7 @@
   resolved "https://registry.yarnpkg.com/@firebase/firestore-types/-/firestore-types-2.5.0.tgz#16fca40b6980fdb000de86042d7a96635f2bcdd7"
   integrity sha512-I6c2m1zUhZ5SH0cWPmINabDyH5w0PPFHk2UHsjBpKdZllzJZ2TwTkXbDtpHUZNmnc/zAa0WNMNMvcvbb/xJLKA==
 
-"@firebase/firestore@3.0.1":
+"@firebase/firestore@3.0.1", "@firebase/firestore@^3.0.1":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@firebase/firestore/-/firestore-3.0.1.tgz#0152c6a767e116382fb28a0e62b6ea7fa331cc20"
   integrity sha512-HDnmweq9GOrk4AtCyQ50FBj/cRowb7IXeTGOx6/MSGYCodKv+9axviKqKPYlWH7cbyrw2Jf3GJTUdkVghMhn+w==
