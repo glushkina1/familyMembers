@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, ActivityIndicator, TouchableOpacity, Text} from 'react-native';
+import {View, StyleSheet, ActivityIndicator, TouchableOpacity} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import PersonComponent from '../components/Person'
 import {getMembers} from "../store/actions/memberActions";
@@ -7,8 +7,6 @@ import {useAppDispatch} from "../store";
 import City from "../components/City";
 
 const HomeScreen = ({route, navigation}) => {
-
-
     const [loading, setLoading] = useState(true);
     const dispatch = useAppDispatch();
 
@@ -23,15 +21,12 @@ const HomeScreen = ({route, navigation}) => {
     }
 
 
-
-
-
     return (
         <View style={styles.homeScreen}>
             <City/>
             <PersonComponent navigation={navigation} route={route}/>
             <View style={styles.buttonPlus}>
-                <TouchableOpacity onPress={() => navigation.navigate('New Member', {id: 0})}>
+                <TouchableOpacity onPress={() => navigation.navigate('NewMemberScreen', {id: 0})}>
                     <Ionicons name='add-circle-outline' size={60} color="blue"/>
                 </TouchableOpacity>
             </View>
@@ -43,7 +38,7 @@ const styles = StyleSheet.create({
     homeScreen: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#E8EAED'
+        backgroundColor: '#F8F8FF'
     },
     buttonPlus: {
         position: "absolute",

@@ -1,16 +1,19 @@
 import React, {useEffect, useState} from 'react';
-import {Button, StyleSheet, Text, TextInput, TouchableOpacity, View, Platform, Image} from 'react-native';
-import {useAppSelector, useAppDispatch} from "../store";
+import {Image, Platform, StyleSheet, Text, TextInput, View} from 'react-native';
+import {useAppDispatch, useAppSelector} from "../store";
 import {createMember, updateMember} from "../store/actions/memberActions";
 import * as ImagePicker from 'expo-image-picker';
+import {RadioButton, Button} from 'react-native-paper';
 
 const NewMemberScreen = ({route, navigation}) => {
+    console.log(navigation,"here",route);
     const [personName, setPersonName] = useState('');
     const [personRelationship, setPersonRelationship] = useState('');
-    const [personSex, setPersonSex] = useState('')
+    const [personSex, setPersonSex] = useState('male')
     const [personImage, setPersonImage] = useState(null);
     const [showError, setShowError] = useState(false);
     const {members} = useAppSelector(state => state.member);
+    const [checked, setChecked] = useState('male');
     const dispatch = useAppDispatch();
 
 
@@ -20,6 +23,7 @@ const NewMemberScreen = ({route, navigation}) => {
             setPersonName(memberFound.name);
             setPersonSex(memberFound.sex);
             setPersonRelationship(memberFound.relationship);
+            setPersonImage(memberFound.image)
         }
     }, [members, route.params.id]);
 
@@ -36,7 +40,6 @@ const NewMemberScreen = ({route, navigation}) => {
     }, []);
 
 
-
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -50,11 +53,10 @@ const NewMemberScreen = ({route, navigation}) => {
         }
     };
 
-
     const handlePerson = () => {
-        if (personName && personRelationship && personSex && personImage && !route.params.id) {
+        if (personName && personRelationship && personSex && !route.params.id) {
             dispatch(createMember(personName, personRelationship, personSex, personImage, navigation.navigate('My family'), null));
-        } else if (personName && personRelationship && personSex && personImage && route.params.id) {
+        } else if (personName && personRelationship && personSex && route.params.id) {
             const updMember = {
                 name: personName,
                 relationship: personRelationship,
@@ -68,41 +70,101 @@ const NewMemberScreen = ({route, navigation}) => {
         }
     }
 
-
     return (
         <View style={styles.newMemberScreen}>
             <TextInput
                 placeholder="Person's name"
+                placeholderTextColor='#c0c0c0'
                 value={personName}
                 onChangeText={text => setPersonName(text)}
                 style={styles.inputName}
             />
             <TextInput
                 placeholder="Relationship to the person"
+                placeholderTextColor='#c0c0c0'
                 value={personRelationship}
                 onChangeText={text => setPersonRelationship(text)}
                 style={styles.inputRelationship}
             />
             {showError && <Text style={{color: 'red'}}>Error, fill in all the fields</Text>}
-            <View style={styles.genderContainer}>
-                <Text style={styles.textGender}>Gender is...</Text>
-                <Button title={'male'} onPress={() => setPersonSex('male')}/>
-                <Button title={'female'} onPress={() => setPersonSex('female')}/>
-                <Button title={'non-binary gender'} onPress={() => setPersonSex('non-binary gender')}/>
+            <View style={styles.wholeGenderContainer}>
+                <View style={styles.genderContainer}>
+                    <Text>male</Text>
+                    <RadioButton
+                        value="male"
+                        status={checked === 'male' ? 'checked' : 'unchecked'}
+                        color='#0074D9'
+                        uncheckedColor='#ddd'
+                        onPress={() => {
+                            setChecked('male');
+                            setPersonSex('male');
+                        }}
+                    />
+                </View>
+                <View style={styles.genderContainer}>
+                    <Text>female</Text>
+                    <RadioButton
+                        value="female"
+                        status={checked === 'female' ? 'checked' : 'unchecked'}
+                        color='pink'
+                        uncheckedColor='#ddd'
+                        onPress={() => {
+                            setChecked('female');
+                            setPersonSex('female');
+                        }}
+                    />
+                </View>
+                <View style={styles.genderContainer}>
+                    <Text>non-binary</Text>
+                    <RadioButton
+                        value="non-binary"
+                        status={checked === 'non-binary' ? 'checked' : 'unchecked'}
+                        color='black'
+                        uncheckedColor='#ddd'
+                        onPress={() => {
+                            setChecked('non-binary');
+                            setPersonSex('non-binary ');
+                        }}
+                    />
+                </View>
             </View>
-            <Button title="Pick an image from camera roll" onPress={pickImage}/>
-            {personImage && <Image source={{uri: personImage}} style={{width: 70, height: 70}}/>}
+            {personImage ?
+                <View style={{flexDirection:'row'}}>
+                    <Image
+                        source={{uri: personImage}}
+                        style={{width: 70, height: 70}}
+                    />
+                    <Button icon='delete'
+                            mode='text'
+                            style={{justifyContent:'center', alignItems:'center'}}
+                            labelStyle={{color:'#D73A3A', fontSize:25}}
+                            onPress={() => setPersonImage(null)}>
+                    </Button>
+                </View>
+                : <Button style={styles.imagePickerButton}
+                          icon='camera'
+                          mode='text'
+                          labelStyle={styles.labelStyleImagePicker}
+                          onPress={pickImage}>
+                    <Text>Choose an image for your member</Text>
+                </Button>}
             <View style={styles.buttonsContainer}>
-                <TouchableOpacity onPress={() => handlePerson()}>
-                    <Text style={styles.saveButton}>
-                        save
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Text style={styles.cancelButton}>
-                        back
-                    </Text>
-                </TouchableOpacity>
+                <Button icon="chevron-down-circle-outline"
+                        mode='text'
+                        compact={true}
+                        style={styles.saveButton}
+                        labelStyle={{color: 'white', fontSize: 14}}
+                        onPress={() => handlePerson()}>
+                    save
+                </Button>
+                <Button icon="cancel"
+                        mode='text'
+                        compact={true}
+                        style={styles.cancelButton}
+                        labelStyle={{color: 'white', fontSize: 14}}
+                        onPress={() => navigation.goBack()}>
+                    cancel
+                </Button>
             </View>
         </View>
     );
@@ -118,39 +180,41 @@ const styles = StyleSheet.create({
         backgroundColor: '#E8EAED'
     },
     inputName: {
+        textAlign: 'center',
         alignItems: 'center',
         justifyContent: 'center',
-        fontSize: 35,
+        fontSize: 28,
         width: '40%',
         borderBottomWidth: 1,
     },
     inputRelationship: {
+        textAlign: 'center',
         borderBottomWidth: 1,
         width: '40%',
         alignItems: 'center',
         justifyContent: 'center',
-        fontSize: 35,
+        paddingTop: 9,
+        fontSize: 28,
+        marginBottom: 15,
     },
     buttonsContainer: {
-        width: 105,
+        marginTop: 8,
         minHeight: 40,
         alignItems: 'center',
-        justifyContent: 'space-around',
         flexDirection: 'row',
     },
     saveButton: {
-        backgroundColor: '#90EE90',
-        fontSize: 22,
-        color: 'white',
+        width: 85,
+        backgroundColor: '#61C964',
     },
     cancelButton: {
-        color: 'white',
-        backgroundColor: '#DC143C',
-        fontSize: 22,
+        marginLeft: 5,
+        width: 105,
+        backgroundColor: '#D73A3A',
     },
-    genderContainer: {
+    wholeGenderContainer: {
         width: '40%',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         flexDirection: 'row',
     },
     textGender: {
@@ -158,7 +222,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: "center",
     },
-    btnText: {},
+    genderContainer: {
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    labelStyleImagePicker: {
+        color: '#aaa',
+        marginTop: 10,
+    },
+    imagePickerButton: {
+        marginTop: 10,
+        backgroundColor: '#ddd'
+    },
 });
 
 export default NewMemberScreen;

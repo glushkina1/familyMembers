@@ -6,6 +6,7 @@ import NewMemberScreen from "./screens/NewMemberScreen";
 import {Provider} from "react-redux";
 import {store} from "./store";
 
+
 const Stack = createStackNavigator();
 
 const linking = {

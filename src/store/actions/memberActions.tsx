@@ -1,11 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {SET_MEMBERS} from "../types";
-import {RootState, store} from "../index";
+import {store} from "../index";
 import {STORAGE_KEYS} from "../../constans";
 
 
 
-// Get Members
 export const getMembers = (onSuccess = () => {
 }, onError = () => {
 }) => {
@@ -26,7 +25,6 @@ export const getMembers = (onSuccess = () => {
     };
 };
 
-// Create new member
 export const createMember = (name, relationship, sex, image, onSuccess = () => {
 }, onError = () => {
 }) => {
@@ -56,7 +54,6 @@ export const createMember = (name, relationship, sex, image, onSuccess = () => {
         }
     }
 };
-// Update member
 export const updateMember = (member, onSuccess = () => {
 }, onError = () => {
 }) => {
@@ -80,7 +77,6 @@ export const updateMember = (member, onSuccess = () => {
     };
 }
 
-// Delete member
 export const deleteMember = (id, onSuccess = () => {
 }, onError = () => {
 }) => {
@@ -101,5 +97,3 @@ export const deleteMember = (id, onSuccess = () => {
         }
     };
 };
-
-// export const state: RootState;
