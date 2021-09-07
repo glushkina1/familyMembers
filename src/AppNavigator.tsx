@@ -1,10 +1,11 @@
 import {createStackNavigator} from "@react-navigation/stack";
-import {NavigationContainer, Link} from "@react-navigation/native";
+import {NavigationContainer} from "@react-navigation/native";
 import React from "react";
 import HomeScreen from "./screens/HomeScreen";
 import NewMemberScreen from "./screens/NewMemberScreen";
 import {Provider} from "react-redux";
 import {store} from "./store";
+
 
 const Stack = createStackNavigator();
 
@@ -13,7 +14,7 @@ const linking = {
     config: {
         screens: {
             HomeScreen: '',
-            NewMemberScreen: 'member/:id',
+            NewMemberScreen: 'newMember',
         }
     },
 };
@@ -21,11 +22,11 @@ const linking = {
 const AppNavigator = () => {
     return (
         <Provider store={store}>
-            <NavigationContainer linking={linking} fallback={'Loading...'}>
+            <NavigationContainer linking={linking}>
                 <Stack.Navigator initialRouteName="HomeScreen">
-                    <Stack.Screen name="My family" component={HomeScreen}
+                    <Stack.Screen name="HomeScreen" component={HomeScreen}
                                   options={{title: 'Your family members', headerTitleAlign: 'center'}}/>
-                    <Stack.Screen name="New Member" component={NewMemberScreen}
+                    <Stack.Screen name="NewMemberScreen" component={NewMemberScreen}
                                   options={{title: 'Add a new member to your family', headerTitleAlign: 'center'}}/>
                 </Stack.Navigator>
             </NavigationContainer>

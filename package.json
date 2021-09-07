@@ -1,5 +1,4 @@
 {
-  "license": "UNLICENSED",
   "main": "index.js",
   "scripts": {
     "android": "react-native run-android",
@@ -16,6 +15,7 @@
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-firebase/app": "^12.7.3",
     "@react-navigation/native": "^5.9.4",
+    "@react-navigation/native-stack": "^6.1.0",
     "@react-navigation/stack": "^5.14.5",
     "@reduxjs/toolkit": "^1.6.1",
     "@types/react-redux": "^7.1.18",
@@ -25,7 +25,6 @@
     "expo-splash-screen": "~0.10.2",
     "expo-status-bar": "~1.0.4",
     "expo-updates": "~0.5.4",
-    "firebase": "^9.0.1",
     "install": "^0.13.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",

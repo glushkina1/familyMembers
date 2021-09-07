@@ -11,10 +11,10 @@ const PersonComponent = ({route, navigation}) => {
     const {members} = useAppSelector(state => state.member);
 
     const updateMemberHandler = (member) => {
-        navigation.navigate('New Member', {id: member.id});
+        navigation.navigate('NewMemberScreen', {id: member.id});
     }
     const deleteMemberHandler = (id) => {
-        dispatch(deleteMember(id, () => navigation.navigate('My family'), null))
+        dispatch(deleteMember(id, () => navigation.navigate('HomeScreen'), null))
     }
 
     return (

@@ -26,7 +26,7 @@ const HomeScreen = ({route, navigation}) => {
             <City/>
             <PersonComponent navigation={navigation} route={route}/>
             <View style={styles.buttonPlus}>
-                <TouchableOpacity onPress={() => navigation.navigate('New Member', {id: 0})}>
+                <TouchableOpacity onPress={() => navigation.navigate('NewMemberScreen', {id: 0})}>
                     <Ionicons name='add-circle-outline' size={60} color="blue"/>
                 </TouchableOpacity>
             </View>
