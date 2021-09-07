@@ -14,7 +14,7 @@ const linking = {
     config: {
         screens: {
             HomeScreen: '',
-            NewMemberScreen: 'newMember',
+            NewMemberScreen: 'member',
         }
     },
 };

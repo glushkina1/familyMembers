@@ -55,7 +55,7 @@ const NewMemberScreen = ({route, navigation}) => {
 
     const handlePerson = () => {
         if (personName && personRelationship && personSex && !route.params.id) {
-            dispatch(createMember(personName, personRelationship, personSex, personImage, navigation.navigate('My family'), null));
+            dispatch(createMember(personName, personRelationship, personSex, personImage, navigation.navigate('HomeScreen'), null));
         } else if (personName && personRelationship && personSex && route.params.id) {
             const updMember = {
                 name: personName,
