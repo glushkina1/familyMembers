@@ -6,7 +6,6 @@ import * as ImagePicker from 'expo-image-picker';
 import {RadioButton, Button} from 'react-native-paper';
 
 const NewMemberScreen = ({route, navigation}) => {
-    console.log(navigation,"here",route);
     const [personName, setPersonName] = useState('');
     const [personRelationship, setPersonRelationship] = useState('');
     const [personSex, setPersonSex] = useState('male')
@@ -16,16 +15,17 @@ const NewMemberScreen = ({route, navigation}) => {
     const [checked, setChecked] = useState('male');
     const dispatch = useAppDispatch();
 
-
-    useEffect(() => {
-        const memberFound = members.find(mem => mem.id === route.params.id);
-        if (memberFound) {
-            setPersonName(memberFound.name);
-            setPersonSex(memberFound.sex);
-            setPersonRelationship(memberFound.relationship);
-            setPersonImage(memberFound.image)
-        }
-    }, [members, route.params.id]);
+    if(route.params) {
+        useEffect(() => {
+            const memberFound = members.find(member => member.id === route.params.id);
+            if (memberFound) {
+                setPersonName(memberFound.name);
+                setPersonSex(memberFound.sex);
+                setPersonRelationship(memberFound.relationship);
+                setPersonImage(memberFound.image)
+            }
+        }, [members, route.params.id]);
+    }
 
 
     useEffect(() => {
@@ -54,7 +54,7 @@ const NewMemberScreen = ({route, navigation}) => {
     };
 
     const handlePerson = () => {
-        if (personName && personRelationship && personSex && !route.params.id) {
+        if (personName && personRelationship && personSex && !route.params) {
             dispatch(createMember(personName, personRelationship, personSex, personImage, navigation.navigate('HomeScreen'), null));
         } else if (personName && personRelationship && personSex && route.params.id) {
             const updMember = {

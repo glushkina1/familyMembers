@@ -34,7 +34,7 @@ export const createMember = (name, relationship, sex, image, onSuccess = () => {
                 name: name,
                 relationship: relationship,
                 sex: sex,
-                id: `member-${new Date().getTime()}`,
+                id: `${new Date().getTime()}`,
                 image: image,
             };
             const {members} = store.getState().member;

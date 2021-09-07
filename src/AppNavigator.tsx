@@ -10,11 +10,11 @@ import {store} from "./store";
 const Stack = createStackNavigator();
 
 const linking = {
-    prefixes: ['http://localhost:19006/'],
+    prefixes: ['my_family://'],
     config: {
         screens: {
             HomeScreen: '',
-            NewMemberScreen: 'member',
+            NewMemberScreen: 'member/:id?',
         }
     },
 };
