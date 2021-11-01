@@ -15,9 +15,9 @@ const NewMemberScreen = ({route, navigation}) => {
     const [checked, setChecked] = useState('male');
     const dispatch = useAppDispatch();
 
-    if(route.params) {
+    if (route.params) {
         useEffect(() => {
-            const memberFound = members.find(member => member.id === route.params.id);
+            const memberFound = members.find(mem => mem.id === route.params.id);
             if (memberFound) {
                 setPersonName(memberFound.name);
                 setPersonSex(memberFound.sex);
@@ -39,7 +39,9 @@ const NewMemberScreen = ({route, navigation}) => {
         })();
     }, []);
 
-
+    const upperCase = (text: string) => {
+        setPersonName(text.charAt(0).toUpperCase() + text.slice(1))
+    }
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -76,15 +78,15 @@ const NewMemberScreen = ({route, navigation}) => {
                 placeholder="Person's name"
                 placeholderTextColor='#c0c0c0'
                 value={personName}
-                onChangeText={text => setPersonName(text)}
-                style={styles.inputName}
+                onChangeText={text => upperCase(text)}
+                style={styles.input}
             />
             <TextInput
                 placeholder="Relationship to the person"
                 placeholderTextColor='#c0c0c0'
                 value={personRelationship}
                 onChangeText={text => setPersonRelationship(text)}
-                style={styles.inputRelationship}
+                style={styles.input}
             />
             {showError && <Text style={{color: 'red'}}>Error, fill in all the fields</Text>}
             <View style={styles.wholeGenderContainer}>
@@ -129,15 +131,15 @@ const NewMemberScreen = ({route, navigation}) => {
                 </View>
             </View>
             {personImage ?
-                <View style={{flexDirection:'row'}}>
+                <View style={{flexDirection: 'row'}}>
                     <Image
                         source={{uri: personImage}}
                         style={{width: 70, height: 70}}
                     />
                     <Button icon='delete'
                             mode='text'
-                            style={{justifyContent:'center', alignItems:'center'}}
-                            labelStyle={{color:'#D73A3A', fontSize:25}}
+                            style={{justifyContent: 'center', alignItems: 'center'}}
+                            labelStyle={{color: '#D73A3A', fontSize: 25}}
                             onPress={() => setPersonImage(null)}>
                     </Button>
                 </View>
@@ -146,7 +148,7 @@ const NewMemberScreen = ({route, navigation}) => {
                           mode='text'
                           labelStyle={styles.labelStyleImagePicker}
                           onPress={pickImage}>
-                    <Text>Choose an image for your member</Text>
+                    <Text style={styles.imagePickerButtonText}>Choose an image for your member</Text>
                 </Button>}
             <View style={styles.buttonsContainer}>
                 <Button icon="chevron-down-circle-outline"
@@ -179,23 +181,26 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: '#E8EAED'
     },
-    inputName: {
+    input: {
+        ...Platform.select({
+            ios: {
+                width: '85%',
+                fontSize:20,
+            },
+            web: {
+                width: '40%',
+                fontSize: 28,
+            },
+            android: {
+                width: '85%',
+                fontSize:20,
+            }
+        }),
         textAlign: 'center',
         alignItems: 'center',
         justifyContent: 'center',
-        fontSize: 28,
-        width: '40%',
         borderBottomWidth: 1,
-    },
-    inputRelationship: {
-        textAlign: 'center',
-        borderBottomWidth: 1,
-        width: '40%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingTop: 9,
-        fontSize: 28,
-        marginBottom: 15,
+        marginTop: 9,
     },
     buttonsContainer: {
         marginTop: 8,
@@ -213,16 +218,49 @@ const styles = StyleSheet.create({
         backgroundColor: '#D73A3A',
     },
     wholeGenderContainer: {
-        width: '40%',
-        justifyContent: 'space-around',
-        flexDirection: 'row',
+        ...Platform.select({
+            ios: {
+                flexDirection: 'column',
+                borderWidth: 1,
+                borderColor: 'black',
+            },
+            web: {
+                width: '40%',
+                justifyContent: 'space-around',
+                flexDirection: 'row',
+            },
+            android: {
+                flexDirection: 'column',
+            }
+        }),
+        marginTop:10,
     },
     textGender: {
         fontSize: 22,
-        alignItems: 'center',
+        ...Platform.select({
+            ios: {
+                alignItems: 'center',
+            },
+            web: {
+                alignItems: 'center',
+            },
+            android: {
+                alignItems: 'flex-start',
+            }
+        }),
         justifyContent: "center",
     },
     genderContainer: {
+        ...Platform.select({
+            ios: {
+                flexDirection: 'row',
+                justifyContent: "space-between",
+            },
+            web: {},
+            android: {
+                flexDirection: 'row',
+            }
+        }),
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -231,8 +269,33 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     imagePickerButton: {
+        ...Platform.select({
+            ios: {
+                width: '80%',
+            },
+            web: {
+
+            },
+            android: {
+                width: '80%',
+            }
+        }),
         marginTop: 10,
         backgroundColor: '#ddd'
+    },
+    imagePickerButtonText: {
+        ...Platform.select({
+            ios: {
+                width: '90%',
+                fontSize: 13,
+            },
+            web: {
+
+            },
+            android: {
+                width: '90%',
+            }
+        }),
     },
 });
 

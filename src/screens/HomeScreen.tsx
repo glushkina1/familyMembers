@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, ActivityIndicator, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, ActivityIndicator, TouchableOpacity, Text} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import PersonComponent from '../components/Person'
 import {getMembers} from "../store/actions/memberActions";
 import {useAppDispatch} from "../store";
 import City from "../components/City";
+import { setCurrentLocation } from "../firebase.config"
+
 
 const HomeScreen = ({route, navigation}) => {
     const [loading, setLoading] = useState(true);
@@ -21,9 +23,13 @@ const HomeScreen = ({route, navigation}) => {
     }
 
 
+
     return (
         <View style={styles.homeScreen}>
             <City/>
+            <TouchableOpacity onPress={()=> {setCurrentLocation(phoneNumber, lat, long)}}>
+                <Text>Test</Text>
+            </TouchableOpacity>
             <PersonComponent navigation={navigation} route={route}/>
             <View style={styles.buttonPlus}>
                 <TouchableOpacity onPress={() => navigation.navigate('NewMemberScreen')}>

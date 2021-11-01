@@ -2,33 +2,37 @@ import React, {useEffect, useState} from 'react';
 import * as Location from "expo-location";
 import {Text} from "react-native";
 import { positionstack_api_key } from "../../config.json"
+import {setCurrentLocation} from "../firebase.config";
 
 const City = () => {
     const [regionName,setRegionName] = useState(null)
-    const [errorMsg, setErrorMsg] = useState('there is an error');
+    let errorMsg = 'there is an error';
 
     useEffect(() => {
         (async () => {
             try {
-                let {status} = await Location.requestForegroundPermissionsAsync();
-                if (status !== 'granted') {
-                    setErrorMsg('Permission to access location was denied');
+                let foregroundPermission = await Location.requestForegroundPermissionsAsync();
+                let backgroundPermission = await Location.requestBackgroundPermissionsAsync();
+
+                if (foregroundPermission.status !== 'granted' || backgroundPermission.status !== 'granted') {
+                    errorMsg = 'Permission to access location was denied';
                     return;
+                } else {
+                    console.log('Все разрешения для отслеживания локации даны')
                 }
 
-                let {coords} = await Location.getCurrentPositionAsync();
+                let currentPosition = await Location.getCurrentPositionAsync();
 
-                if (coords) {
-                    let {longitude, latitude} = coords;
-                    const res = await fetch(`http://api.positionstack.com/v1/reverse?access_key=${positionstack_api_key}&query=${latitude},${longitude}`);
+                if (currentPosition.coords) {
+                    const res = await fetch(`http://api.positionstack.com/v1/reverse?access_key=${positionstack_api_key}&query=${currentPosition.coords.latitude},${currentPosition.coords.longitude}`);
                     const resJson = await res.json();
                     setRegionName(resJson);
                 }
                 return;
-            } catch (errorMsg) {
-                setErrorMsg(errorMsg)
-                return;
-            }
+                } catch (errorMsg) {
+                    console.log(errorMsg)
+                    return;
+                }
         })();
     }, []);
 
