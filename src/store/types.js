@@ -1,0 +1,3 @@
+export const SAVE_MEMBER = 'SAVE_MEMBER';
+export const UPDATE_MEMBER = 'UPDATE_MEMBER';
+export const DELETE_MEMBER = 'DELETE_MEMBER';

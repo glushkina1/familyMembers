@@ -4,7 +4,7 @@ import {Text} from "react-native";
 import { positionstack_api_key } from "../../config.json"
 import {setCurrentLocation} from "../firebase.config";
 
-const City = () => {
+const UserLocation = () => {
     const [regionName,setRegionName] = useState(null)
     let errorMsg = 'there is an error';
 
@@ -30,7 +30,7 @@ const City = () => {
                 }
                 return;
                 } catch (errorMsg) {
-                    console.log(errorMsg)
+                    console.log('something wrong with currentPosition.coords')
                     return;
                 }
         })();
@@ -43,4 +43,4 @@ const City = () => {
     )
 }
 
-export default City;
+export default UserLocation;

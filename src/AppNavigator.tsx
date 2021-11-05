@@ -4,7 +4,7 @@ import React from "react";
 import HomeScreen from "./screens/HomeScreen";
 import NewMemberScreen from "./screens/NewMemberScreen";
 import {Provider} from "react-redux";
-import {store} from "./store";
+import { store } from "./store/configStore";
 
 
 const Stack = createStackNavigator();

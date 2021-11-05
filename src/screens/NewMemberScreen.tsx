@@ -1,31 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import {Image, Platform, StyleSheet, Text, TextInput, View} from 'react-native';
-import {useAppDispatch, useAppSelector} from "../store";
-import {createMember, updateMember} from "../store/actions/memberActions";
+import { saveMember} from "../store/memberActions";
 import * as ImagePicker from 'expo-image-picker';
 import {RadioButton, Button} from 'react-native-paper';
+import { useDispatch } from 'react-redux';
 
-const NewMemberScreen = ({route, navigation}) => {
+
+const NewMemberScreen = ({ navigation}) => {
     const [personName, setPersonName] = useState('');
     const [personRelationship, setPersonRelationship] = useState('');
-    const [personSex, setPersonSex] = useState('male')
     const [personImage, setPersonImage] = useState(null);
+    const [personPhoneNumber, setPersonPhoneNumber] = useState('')
     const [showError, setShowError] = useState(false);
-    const {members} = useAppSelector(state => state.member);
-    const [checked, setChecked] = useState('male');
-    const dispatch = useAppDispatch();
-
-    if (route.params) {
-        useEffect(() => {
-            const memberFound = members.find(mem => mem.id === route.params.id);
-            if (memberFound) {
-                setPersonName(memberFound.name);
-                setPersonSex(memberFound.sex);
-                setPersonRelationship(memberFound.relationship);
-                setPersonImage(memberFound.image)
-            }
-        }, [members, route.params.id]);
-    }
+    const [personSex, setPersonSex] = useState('male');
+    const dispatch = useDispatch();
 
 
     useEffect(() => {
@@ -54,19 +42,48 @@ const NewMemberScreen = ({route, navigation}) => {
             setPersonImage(result.uri);
         }
     };
+    const regexPhoneNumber = (text) => {
+        let phoneNum = '';
+        let onlyDigitsString = text.replace(/\D/gi, '') || ''
 
-    const handlePerson = () => {
-        if (personName && personRelationship && personSex && !route.params) {
-            dispatch(createMember(personName, personRelationship, personSex, personImage, navigation.navigate('HomeScreen'), null));
-        } else if (personName && personRelationship && personSex && route.params.id) {
-            const updMember = {
+
+        if (onlyDigitsString.length > 0) {
+
+            let countryCode = onlyDigitsString.charAt(0);
+            let areaCode = onlyDigitsString.slice(1, 4);
+            let middle = onlyDigitsString.slice(4, 7);
+            let preLast = onlyDigitsString.slice(7, 9);
+            let last = onlyDigitsString.slice(9, 11);
+
+            if (onlyDigitsString.length < 4) {
+                phoneNum = `+${countryCode} (${areaCode})`
+                setPersonPhoneNumber(phoneNum)
+            } else if (onlyDigitsString.length < 7) {
+                phoneNum = `+${countryCode} (${areaCode}) ${middle}`;
+                setPersonPhoneNumber(phoneNum)
+            } else if (onlyDigitsString.length < 9) {
+                phoneNum = `+${countryCode} (${areaCode}) ${middle}-${preLast}`
+                setPersonPhoneNumber(phoneNum)
+            } else {phoneNum = `+${countryCode} (${areaCode}) ${middle}-${preLast}-${last}`
+                setPersonPhoneNumber(phoneNum)
+            }
+        }
+        setPersonPhoneNumber(phoneNum)
+    }
+
+
+
+    const saveMemberHandler = () => {
+        if (personName && personRelationship && personSex && personPhoneNumber) {
+            let newMember = {
                 name: personName,
                 relationship: personRelationship,
                 sex: personSex,
-                id: route.params.id,
-                image: personImage,
+                image: personImage || '',
+                phoneNumber: personPhoneNumber,
             }
-            dispatch(updateMember(updMember, navigation.goBack(), null))
+            dispatch(saveMember(newMember));
+            navigation.navigate('HomeScreen');
         } else {
             setShowError(true)
         }
@@ -88,17 +105,39 @@ const NewMemberScreen = ({route, navigation}) => {
                 onChangeText={text => setPersonRelationship(text)}
                 style={styles.input}
             />
+            <TextInput
+                placeholder="phone number"
+                placeholderTextColor='#c0c0c0'
+                value={personPhoneNumber}
+                onChangeText={text => regexPhoneNumber(text)}
+                onKeyPress={({ nativeEvent }) => {
+                    if (nativeEvent.key === 'Backspace') {
+                        let lastNumber = personPhoneNumber;
+                        let lastChar = '';
+
+
+                        for (let i = lastNumber.length - 1; i >= 0; i--) {
+                            console.log(lastNumber, 0,lastChar)
+                            lastChar = lastNumber.charAt(i)
+                            if (parseFloat(lastChar).toString() == lastChar)
+                                break;
+                            lastNumber = lastNumber.slice(0, i)
+                        }
+                        setPersonPhoneNumber(lastNumber);
+                    }
+                }}
+                style={styles.input}
+            />
             {showError && <Text style={{color: 'red'}}>Error, fill in all the fields</Text>}
             <View style={styles.wholeGenderContainer}>
                 <View style={styles.genderContainer}>
                     <Text>male</Text>
                     <RadioButton
                         value="male"
-                        status={checked === 'male' ? 'checked' : 'unchecked'}
+                        status={personSex === 'male' ? 'checked' : 'unchecked'}
                         color='#0074D9'
                         uncheckedColor='#ddd'
                         onPress={() => {
-                            setChecked('male');
                             setPersonSex('male');
                         }}
                     />
@@ -107,11 +146,10 @@ const NewMemberScreen = ({route, navigation}) => {
                     <Text>female</Text>
                     <RadioButton
                         value="female"
-                        status={checked === 'female' ? 'checked' : 'unchecked'}
+                        status={personSex === 'female' ? 'checked' : 'unchecked'}
                         color='pink'
                         uncheckedColor='#ddd'
                         onPress={() => {
-                            setChecked('female');
                             setPersonSex('female');
                         }}
                     />
@@ -120,12 +158,11 @@ const NewMemberScreen = ({route, navigation}) => {
                     <Text>non-binary</Text>
                     <RadioButton
                         value="non-binary"
-                        status={checked === 'non-binary' ? 'checked' : 'unchecked'}
+                        status={personSex === 'non-binary' ? 'checked' : 'unchecked'}
                         color='black'
                         uncheckedColor='#ddd'
                         onPress={() => {
-                            setChecked('non-binary');
-                            setPersonSex('non-binary ');
+                            setPersonSex('non-binary');
                         }}
                     />
                 </View>
@@ -156,7 +193,7 @@ const NewMemberScreen = ({route, navigation}) => {
                         compact={true}
                         style={styles.saveButton}
                         labelStyle={{color: 'white', fontSize: 14}}
-                        onPress={() => handlePerson()}>
+                        onPress={() => saveMemberHandler()}>
                     save
                 </Button>
                 <Button icon="cancel"
@@ -164,7 +201,7 @@ const NewMemberScreen = ({route, navigation}) => {
                         compact={true}
                         style={styles.cancelButton}
                         labelStyle={{color: 'white', fontSize: 14}}
-                        onPress={() => navigation.goBack()}>
+                        onPress={() => navigation.navigate('HomeScreen')}>
                     cancel
                 </Button>
             </View>
