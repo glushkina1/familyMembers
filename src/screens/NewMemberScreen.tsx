@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import PhoneNumberInput from "../components/PhoneNumberInput";
 import OtherInputs from "../components/OtherInputs";
 import GenderContainer from "../components/genderContainer";
+import ImageComponent from "../components/ImageComponent";
 
 
 const NewMemberScreen = ({route, navigation}) => {
@@ -87,7 +88,7 @@ const NewMemberScreen = ({route, navigation}) => {
             {showErrorUsedNumber && <Text style={{color: 'red'}}>This member is already in your list</Text>}
             {showErrorAllFields && <Text style={{color: 'red'}}>Error, fill in all the fields</Text>}
             <GenderContainer personSex={personSex} setPersonSex={setPersonSex}/>
-
+            <ImageComponent personImage={personImage} setPersonImage={setPersonImage}/>
             <View style={styles.buttonsContainer}>
                 <Button icon="chevron-down-circle-outline"
                         mode='text'
