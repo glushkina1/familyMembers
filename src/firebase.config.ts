@@ -14,16 +14,14 @@ const firebaseConfig = {
 
 
 
-
-
-export const setCurrentLocation = (phoneNumber, lat, long) => {
+export const setCurrentLocation = (phoneNumber, latitude, longitude) => {
      const db = getDatabase();
      const reference = ref(db, 'members/' + phoneNumber);
      set(reference, {
-         lat: lat,
-         long: long,
+         latitude: latitude,
+         longitude: longitude,
      }).then(() => console.log(' setCurrentLocation is succeed'));
- }
+ };
 
 
 const app = initializeApp(firebaseConfig);

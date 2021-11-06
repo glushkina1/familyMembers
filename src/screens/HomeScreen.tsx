@@ -1,15 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, ActivityIndicator, TouchableOpacity, Text, Platform, Dimensions} from 'react-native';
+import React, {useState} from 'react';
+import {Dimensions, Platform, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import UserLocation from "../components/UserLocation";
-import {setCurrentLocation} from "../firebase.config"
 import MemberList from '../components/MemberList';
-import {useDispatch} from "react-redux";
 
 
 const HomeScreen = ({route, navigation}) => {
     const [loading, setLoading] = useState(true);
-    const dispatch = useDispatch();
 
 
     // if (loading) {
@@ -21,11 +18,8 @@ const HomeScreen = ({route, navigation}) => {
         <View style={styles.homeScreen}>
             <UserLocation/>
             <View style={styles.memberListStyle}>
-                <MemberList navigation={navigation} route={route}/>
+                <MemberList navigation={navigation}/>
             </View>
-            {/*<TouchableOpacity onPress={()=> {setCurrentLocation(phoneNumber, lat, long)}}>*/}
-            {/*    <Text>Test</Text>*/}
-            {/*</TouchableOpacity>*/}
             <View style={styles.buttonPlus}>
                 <TouchableOpacity onPress={() => navigation.navigate('NewMemberScreen')}>
                     <Ionicons name='add-circle-outline' size={60} color="blue"/>

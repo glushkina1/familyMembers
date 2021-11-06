@@ -13,11 +13,12 @@ const linking = {
     prefixes: ['my_family://'],
     config: {
         screens: {
-            HomeScreen: '',
-            NewMemberScreen: 'member/:id?',
+            HomeScreen: 'mainScreen',
+            NewMemberScreen: 'member/:phoneNumber?',
         }
     },
 };
+
 
 const AppNavigator = () => {
     return (

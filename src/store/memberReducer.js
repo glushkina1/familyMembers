@@ -18,16 +18,22 @@ const memberReducer = (state = initialState, action) => {
                     ]
             }
         case "UPDATE_MEMBER":
+            let updatedMemberList = state.members.map(function(member) {
+                if (member.phoneNumber === action.payload.phoneNumber) {
+                    return action.payload;
+                } else {
+                    return member;
+                }
+            })
             return {
-
-
+                members: updatedMemberList,
             }
         case "DELETE_MEMBER":
-                let updatedMemberList = state.members.filter(function(el) {
-                    return el.phoneNumber !== action.payload;
+                let remainedMemberList = state.members.filter(function(member) {
+                    return member.phoneNumber !== action.payload;
                 })
             return {
-                    members: updatedMemberList,
+                    members: remainedMemberList,
             };
 
         default:

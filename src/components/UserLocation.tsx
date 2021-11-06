@@ -8,6 +8,8 @@ const UserLocation = () => {
     const [regionName,setRegionName] = useState(null)
     let errorMsg = 'there is an error';
 
+    const phoneNumberAnna = '+79955981630';
+
     useEffect(() => {
         (async () => {
             try {
@@ -27,6 +29,7 @@ const UserLocation = () => {
                     const res = await fetch(`http://api.positionstack.com/v1/reverse?access_key=${positionstack_api_key}&query=${currentPosition.coords.latitude},${currentPosition.coords.longitude}`);
                     const resJson = await res.json();
                     setRegionName(resJson);
+                    setCurrentLocation(phoneNumberAnna, currentPosition.coords.latitude,currentPosition.coords.longitude)
                 }
                 return;
                 } catch (errorMsg) {

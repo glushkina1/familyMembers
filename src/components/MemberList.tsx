@@ -3,10 +3,10 @@ import {Dimensions, FlatList, Image, Platform, StyleSheet, Text, TouchableOpacit
 import {useDispatch, useSelector} from 'react-redux';
 import {Provider} from "react-native-paper";
 import {Ionicons} from "@expo/vector-icons";
-import {deleteMember, updateMember} from '../store/memberActions';
+import {deleteMember} from '../store/memberActions';
 
 
-export const MemberList = () => {
+export const MemberList = ({ navigation}) => {
 
     const dispatch = useDispatch();
     const members = useSelector((state: any) => state.members);
@@ -15,10 +15,6 @@ export const MemberList = () => {
 
     const deleteMemberHandler = (phoneNumber) => {
         dispatch(deleteMember(phoneNumber))
-    };
-
-    const updateMemberHandler = (member) => {
-        dispatch(updateMember(member))
     };
 
 
@@ -30,7 +26,10 @@ export const MemberList = () => {
                         data={members}
                         keyExtractor={item => item.phoneNumber}
                         style={{marginBottom: 5}}
-                        renderItem={({item}) => <TouchableOpacity onPress={() => updateMemberHandler(item)}>
+                        renderItem={({item}) => <TouchableOpacity onPress={
+                            () => navigation.navigate('NewMemberScreen', {
+                                phoneNumber: item.phoneNumber,
+                        })}>
                             <View style={styles.allParamsPerson}>
                                 {item.image?  <Image source={{uri: item.image}} style={styles.personImage}/>
                                     : <Image source={require('../assets/cat.png')} style={styles.personImage}/>}
@@ -47,6 +46,11 @@ export const MemberList = () => {
                                 <View style={styles.personParams}>
                                     <Text style={styles.textParams}>
                                         {item.sex}
+                                    </Text>
+                                </View>
+                                <View style={styles.personParams}>
+                                    <Text style={styles.textParams}>
+                                        {item.phoneNumber}
                                     </Text>
                                 </View>
                                 <View style={styles.personParams}>
@@ -77,6 +81,17 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
+        ...Platform.select({
+            ios: {
+                width: Dimensions.get('window').width
+            },
+            web: {
+                width: '100%',
+            },
+            android: {
+                width: Dimensions.get('window').width
+            }
+        }),
     },
     personImage: {
         width: 70,
@@ -89,7 +104,7 @@ const styles = StyleSheet.create({
                 width: 10,
             },
             web: {
-                minWidth: 135,
+                minWidth: 120,
             },
             android: {
                 width: 30,
