@@ -4,17 +4,37 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Provider} from "react-native-paper";
 import {Ionicons} from "@expo/vector-icons";
 import {deleteMember} from '../store/memberActions';
+import {getCurrentLocation} from "../firebase.config"
+import {distanceCalculation} from "./Distance";
 
 
-export const MemberList = ({ navigation}) => {
+export const MemberList = ({navigation}) => {
+
+    // let test = distanceCalculation(52,52,54,54)
+    // console.log(test)
 
     const dispatch = useDispatch();
     const members = useSelector((state: any) => state.members);
-    console.log(members)
+    // console.log(members)
 
+
+    const handleDistance = (phoneNumber: number) => {
+        let data = getCurrentLocation(phoneNumber)
+        console.log(data)
+        return data
+    };
 
     const deleteMemberHandler = (phoneNumber) => {
         dispatch(deleteMember(phoneNumber))
+    };
+
+    const formatPhoneNumberBack = (phoneNumber) => {
+        let countryCode = phoneNumber.charAt(0);
+        let areaCode = phoneNumber.slice(1, 4);
+        let middle = phoneNumber.slice(4, 7);
+        let preLast = phoneNumber.slice(7, 9);
+        let last = phoneNumber.slice(9, 11);
+        return `+${countryCode} (${areaCode}) ${middle}-${preLast}-${last}`
     };
 
 
@@ -29,9 +49,9 @@ export const MemberList = ({ navigation}) => {
                         renderItem={({item}) => <TouchableOpacity onPress={
                             () => navigation.navigate('NewMemberScreen', {
                                 phoneNumber: item.phoneNumber,
-                        })}>
+                            })}>
                             <View style={styles.allParamsPerson}>
-                                {item.image?  <Image source={{uri: item.image}} style={styles.personImage}/>
+                                {item.image ? <Image source={{uri: item.image}} style={styles.personImage}/>
                                     : <Image source={require('../assets/cat.png')} style={styles.personImage}/>}
                                 <View style={styles.personParams}>
                                     <Text style={styles.textParams}>
@@ -50,12 +70,12 @@ export const MemberList = ({ navigation}) => {
                                 </View>
                                 <View style={styles.personParams}>
                                     <Text style={styles.textParams}>
-                                        {item.phoneNumber}
+                                        {formatPhoneNumberBack(item.phoneNumber)}
                                     </Text>
                                 </View>
                                 <View style={styles.personParams}>
                                     <Text style={styles.textParams}>
-                                        100 m {"\n"} away
+                                        {handleDistance(item.phoneNumber)}
                                     </Text>
                                 </View>
                                 <View style={styles.personParams}>

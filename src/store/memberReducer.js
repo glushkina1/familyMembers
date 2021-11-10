@@ -1,4 +1,4 @@
-import {SAVE_MEMBER, DELETE_MEMBER, UPDATE_MEMBER} from './types';
+import {SAVE_MEMBER, DELETE_MEMBER, UPDATE_MEMBER, UPDATE_MEMBER_LOCATION} from './types';
 
 const initialState = {
     members: [],
@@ -14,6 +14,8 @@ const memberReducer = (state = initialState, action) => {
                         sex: action.payload.sex,
                         image: action.payload.image,
                         phoneNumber: action.payload.phoneNumber,
+                        latitude: action.payload.latitude,
+                        longitude: action.payload.longitude,
                     }
                     ]
             }
@@ -27,6 +29,12 @@ const memberReducer = (state = initialState, action) => {
             })
             return {
                 members: updatedMemberList,
+            }
+        case "UPDATE_MEMBER_LOCATION":
+            let updatedParams
+
+            return {
+
             }
         case "DELETE_MEMBER":
                 let remainedMemberList = state.members.filter(function(member) {

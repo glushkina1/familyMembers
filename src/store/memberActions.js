@@ -1,9 +1,15 @@
-import {SAVE_MEMBER, DELETE_MEMBER, UPDATE_MEMBER} from './types';
+import {SAVE_MEMBER, DELETE_MEMBER, UPDATE_MEMBER, UPDATE_MEMBER_LOCATION} from './types';
 
 export const saveMember = (newMember) => {
     return {
         type:'SAVE_MEMBER',
         payload: newMember,
+    }
+}
+export const updateMemberLocation = (updatedParams) => {
+    return {
+        type:'UPDATE_MEMBER_LOCATION',
+        payload: updatedParams,
     }
 }
 

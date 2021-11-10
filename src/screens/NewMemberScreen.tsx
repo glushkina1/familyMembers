@@ -16,6 +16,7 @@ const NewMemberScreen = ({route, navigation}) => {
     const [personPhoneNumber, setPersonPhoneNumber] = useState('')
     const [showErrorAllFields, setShowErrorAllFields] = useState(false);
     const [showErrorUsedNumber, setShowErrorUsedNumber] = useState(false);
+    const [showErrorValidPhoneNumber, setShowErrorValidPhoneNumber] = useState(false);
     const [personSex, setPersonSex] = useState('male');
     const dispatch = useDispatch();
     const members = useSelector((state: any) => state.members);
@@ -36,45 +37,53 @@ const NewMemberScreen = ({route, navigation}) => {
 
 
     const modifyPhoneNumber = (personPhoneNumber) => {
-        let modifiedPhoneNumber = personPhoneNumber.replace(/\D/gi, '') || ''
-        setPersonPhoneNumber(modifiedPhoneNumber)
-        console.log(personPhoneNumber)
+        return personPhoneNumber.replace(/\D/gi, '') || ''
     };
 
 
     const saveMemberHandler = () => {
+        let phoneNumber = modifyPhoneNumber(personPhoneNumber);
         if (route.params) {
             const updMember = {
                 name: personName,
                 relationship: personRelationship,
                 sex: personSex,
                 image: personImage || '',
-                phoneNumber: personPhoneNumber,
+                phoneNumber: phoneNumber,
             }
             dispatch(updateMember(updMember));
             navigation.navigate('HomeScreen');
             return;
         }
-        const usedNumber = members.filter(member => member.phoneNumber === personPhoneNumber)
+        const usedNumber = members.filter(member => member.phoneNumber === phoneNumber)
         if (usedNumber.length > 0) {
             setShowErrorUsedNumber(true)
             return;
         }
 
-        if (personName && personRelationship && personSex && personPhoneNumber) {
-            modifyPhoneNumber(personPhoneNumber);
-            let newMember = {
-                name: personName,
-                relationship: personRelationship,
-                sex: personSex,
-                image: personImage || '',
-                phoneNumber: personPhoneNumber,
+        if (personName && personRelationship && personSex && phoneNumber) {
+            if (phoneNumber.length < 11) {
+                setShowErrorValidPhoneNumber(true)
+                return;
+            } else {
+                setShowErrorValidPhoneNumber(false)
+                let newMember = {
+                    name: personName,
+                    relationship: personRelationship,
+                    sex: personSex,
+                    image: personImage || '',
+                    phoneNumber: phoneNumber,
+                    latitude:0,
+                    longitude:0,
+                }
+                dispatch(saveMember(newMember));
+                navigation.navigate('HomeScreen');
             }
-            dispatch(saveMember(newMember));
-            navigation.navigate('HomeScreen');
+
         } else {
             setShowErrorAllFields(true)
         }
+
     }
 
     return (
@@ -87,6 +96,7 @@ const NewMemberScreen = ({route, navigation}) => {
                               setPersonPhoneNumber={setPersonPhoneNumber}/>
             {showErrorUsedNumber && <Text style={{color: 'red'}}>This member is already in your list</Text>}
             {showErrorAllFields && <Text style={{color: 'red'}}>Error, fill in all the fields</Text>}
+            {showErrorValidPhoneNumber && <Text style={{color: 'red'}}>Please enter invalid phone number</Text>}
             <GenderContainer personSex={personSex} setPersonSex={setPersonSex}/>
             <ImageComponent personImage={personImage} setPersonImage={setPersonImage}/>
             <View style={styles.buttonsContainer}>
