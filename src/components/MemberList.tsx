@@ -1,28 +1,52 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Dimensions, FlatList, Image, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Provider} from "react-native-paper";
 import {Ionicons} from "@expo/vector-icons";
-import {deleteMember} from '../store/memberActions';
+import {deleteMember, resetEverything, updateMemberLocation} from '../store/memberActions';
 import {getCurrentLocation} from "../firebase.config"
-import {distanceCalculation} from "./Distance";
 
 
 export const MemberList = ({navigation}) => {
 
-    // let test = distanceCalculation(52,52,54,54)
-    // console.log(test)
+    const userPhoneNumber: number = 79955981630;
+    // dispatch(resetEverything())
+
 
     const dispatch = useDispatch();
     const members = useSelector((state: any) => state.members);
-    // console.log(members)
+
+    useEffect(() => {
+        const interval = setInterval(async () => {
+            members.map(function (el) {
+                getCurrentLocation(el.phoneNumber, (locationParams: any) => {
+                    let userLat = locationParams.latitude;
+                    let userLon = locationParams.longitude;
+                    console.log('get data every 1min',userLon,userLat)
+                    dispatch(updateMemberLocation(el.phoneNumber, userLat, userLon))
+                })
+            })
+        }, 3000);
+
+        return () => clearInterval(interval);
+    },[]);
 
 
-    const handleDistance = (phoneNumber: number) => {
-        let data = getCurrentLocation(phoneNumber)
-        console.log(data)
-        return data
-    };
+
+
+    // const handleDistance = (phoneNumber: number) => {
+    //     // let hours = date.getHours();
+    //     // let minutes = "0" + date.getMinutes();
+    //     // let seconds = "0" + date.getSeconds();
+    //
+    //     // var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+    //
+    //
+    //     return 0;
+    // };
+
+
+
 
     const deleteMemberHandler = (phoneNumber) => {
         dispatch(deleteMember(phoneNumber))
@@ -36,6 +60,7 @@ export const MemberList = ({navigation}) => {
         let last = phoneNumber.slice(9, 11);
         return `+${countryCode} (${areaCode}) ${middle}-${preLast}-${last}`
     };
+
 
 
     return (
@@ -75,7 +100,8 @@ export const MemberList = ({navigation}) => {
                                 </View>
                                 <View style={styles.personParams}>
                                     <Text style={styles.textParams}>
-                                        {handleDistance(item.phoneNumber)}
+                                        lat:{item.latitude}
+                                        lon:{item.longitude}
                                     </Text>
                                 </View>
                                 <View style={styles.personParams}>
@@ -133,7 +159,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    textParams: {},
+    textParams: {
+        fontVariant:['small-caps'],
+    },
     infoStyle: {
         fontSize: 22,
     },

@@ -1,4 +1,4 @@
-import {SAVE_MEMBER, DELETE_MEMBER, UPDATE_MEMBER, UPDATE_MEMBER_LOCATION} from './types';
+import {SAVE_MEMBER, DELETE_MEMBER, UPDATE_MEMBER, UPDATE_MEMBER_LOCATION, RESET_EVERYTHING} from './types';
 
 export const saveMember = (newMember) => {
     return {
@@ -6,10 +6,11 @@ export const saveMember = (newMember) => {
         payload: newMember,
     }
 }
-export const updateMemberLocation = (updatedParams) => {
+export const updateMemberLocation = (phoneNumber, latitude, longitude) => {
+    console.log(3333, latitude, longitude)
     return {
         type:'UPDATE_MEMBER_LOCATION',
-        payload: updatedParams,
+        payload: {phoneNumber: phoneNumber, latitude: latitude, longitude: longitude},
     }
 }
 
@@ -24,6 +25,12 @@ export const deleteMember = (phoneNumber) => {
     return {
         type: "DELETE_MEMBER",
         payload: phoneNumber,
+    }
+}
+
+export const resetEverything = () => {
+    return {
+        type: "RESET_EVERYTHING",
     }
 }
 

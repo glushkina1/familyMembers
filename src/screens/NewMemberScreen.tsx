@@ -5,7 +5,7 @@ import {Button} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import PhoneNumberInput from "../components/PhoneNumberInput";
 import OtherInputs from "../components/OtherInputs";
-import GenderContainer from "../components/genderContainer";
+import GenderContainer from "../components/GenderContainer";
 import ImageComponent from "../components/ImageComponent";
 
 
@@ -67,14 +67,20 @@ const NewMemberScreen = ({route, navigation}) => {
                 return;
             } else {
                 setShowErrorValidPhoneNumber(false)
+
+                let fakeLat = Math.floor(Math.random() * 100)
+                let fakeLon = Math.floor(Math.random() * 100)
+                // let distance = distanceCalculation()
+
                 let newMember = {
                     name: personName,
                     relationship: personRelationship,
                     sex: personSex,
                     image: personImage || '',
                     phoneNumber: phoneNumber,
-                    latitude:0,
-                    longitude:0,
+                    latitude:fakeLat,
+                    longitude:fakeLon,
+                    // distance: distance,
                 }
                 dispatch(saveMember(newMember));
                 navigation.navigate('HomeScreen');

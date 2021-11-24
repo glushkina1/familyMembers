@@ -1,8 +1,5 @@
 import {initializeApp} from "@firebase/app";
 import {getDatabase, onValue, ref, set} from '@firebase/database';
-import {updateMemberLocation} from "../src/store/memberActions";
-import {useDispatch, useSelector} from 'react-redux';
-import {distanceCalculation} from "./components/Distance";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBNdOhCueSGCNENM8zLk5ZD1c_ronEDZKo",
@@ -15,31 +12,28 @@ const firebaseConfig = {
     measurementId: "G-FVYK2Y7SQ1"
 };
 
-export const getCurrentLocation = (phoneNumber:number) => {
+export const getCurrentLocation = (phoneNumber: number, setData: (locationParams: any) => void) => {
 
-    const dispatch = useDispatch();
-
-    phoneNumber = 79955981630;
 
     const db = getDatabase();
     const reference = ref(db, 'members/' + phoneNumber);
     return onValue(reference, (snapshot) => {
         const data = snapshot.val();
-        // dispatch(updateMemberLocation(data))
-        console.log('firebase.config','getCurrentLocation()', data)
-        return data
+        setData(data);
+        // console.log('setData',data)
     })
 };
 
 
-export const setCurrentLocation = (phoneNumber: number, latitude:number, longitude:number, date: Date) => {
+export const setCurrentLocation = (phoneNumber: number, latitude:number, longitude:number, timestamp: number) => {
      const db = getDatabase();
      const reference = ref(db, 'members/' + phoneNumber);
+    let date = new Date(timestamp * 1000)
      set(reference, {
          latitude: latitude,
          longitude: longitude,
-         date: date,
-     }).then(() => console.log('firebase.config','setCurrentLocation()', latitude, longitude));
+         timestamp: timestamp,
+     }).then(() => console.log('setCurrentLocation to mainUser/firebase.config', latitude, longitude, date));
  };
 
 

@@ -6,13 +6,12 @@ import {setCurrentLocation} from "../firebase.config";
 
 
 const UserLocation = () => {
-    const [regionName,setRegionName] = useState(null)
+    const [regionName,setRegionName] = useState(null);
 
     const userPhoneNumber: number = 79955981630;
 
-    // let test = DistanceCalculation(52,52,54,54)
-    // console.log(test)
-
+    // setCurrentLocation(11111111111, 11.11, 11.11, 1637613747.789)
+    // setCurrentLocation(99999999999, 88.99, 88.99, 1636613747.789)
 
     useEffect(() => {
         (async () => {
@@ -27,33 +26,28 @@ const UserLocation = () => {
                     // console.log('Все разрешения для отслеживания локации даны')
                 }
 
-                let currentPosition = await Location.getCurrentPositionAsync();
+                const  interval = setInterval(async () => {
 
-                if (currentPosition.coords) {
-                    const res = await fetch(`http://api.positionstack.com/v1/reverse?access_key=${positionstack_api_key}&query=${currentPosition.coords.latitude},${currentPosition.coords.longitude}`);
-                    const resJson = await res.json();
-                    setRegionName(resJson);
+                    let currentPosition = await Location.getCurrentPositionAsync();
 
-                    function refresh(): Promise<number> {
-                        return new Promise((resolve) => {
-                            setTimeout(() => {
-                                resolve(Math.floor(Math.random() * 100));
-                            }, 100);
-                        });
+                    if (currentPosition.coords) {
+                        const res = await fetch(`http://api.positionstack.com/v1/reverse?access_key=${positionstack_api_key}&query=${currentPosition.coords.latitude},${currentPosition.coords.longitude}`);
+                        const resJson = await res.json();
+                        setRegionName(resJson);
+                        let timestamp = new Date().getTime()/1000;
+                        let lat = parseFloat(currentPosition.coords.latitude.toFixed(2));
+                        let long = parseFloat(currentPosition.coords.longitude.toFixed(2));
+                        console.log('set location every 1 min');
+                        setCurrentLocation(userPhoneNumber, lat, long, timestamp)
                     }
+                    return;
+                    // console.log('Updating your location every 1 min to firebase', fakeLat, fakeLon, timestamp);
+                }, 3000);
 
-                    const  interval = setInterval(async () => {
-                        let fakeLat = await refresh();
-                        let fakeLon = await refresh();
-                        let date = await new Date();
+                return () => clearInterval(interval);
 
-                        setCurrentLocation(userPhoneNumber, fakeLat, fakeLon, date)
-                        console.log('Updating your location every 1 min to firebase', fakeLat, fakeLon);
-                    }, 60000);
 
-                    return () => clearInterval(interval);
-                }
-                return;
+
                 } catch (errorMsg) {
                     console.log('something wrong with currentPosition.coords')
                     return;
