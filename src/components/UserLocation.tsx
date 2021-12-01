@@ -10,8 +10,8 @@ const UserLocation = () => {
 
     const userPhoneNumber: number = 79955981630;
 
-    // setCurrentLocation(11111111111, 11.11, 11.11, 1637613747.789)
-    // setCurrentLocation(99999999999, 88.99, 88.99, 1636613747.789)
+    // setCurrentLocation(1111111111, 11.11, 11.11, 1637613747.789)
+    // setCurrentLocation(9999999999, 88.99, 88.99, 1636613747.789)
 
     useEffect(() => {
         (async () => {
@@ -22,8 +22,6 @@ const UserLocation = () => {
                 if (foregroundPermission.status !== 'granted' || backgroundPermission.status !== 'granted') {
                     console.log('Permission to access location was denied');
                     return;
-                } else {
-                    // console.log('Все разрешения для отслеживания локации даны')
                 }
 
                 const  interval = setInterval(async () => {
@@ -41,12 +39,9 @@ const UserLocation = () => {
                         setCurrentLocation(userPhoneNumber, lat, long, timestamp)
                     }
                     return;
-                    // console.log('Updating your location every 1 min to firebase', fakeLat, fakeLon, timestamp);
-                }, 3000);
+                }, 3000000);
 
                 return () => clearInterval(interval);
-
-
 
                 } catch (errorMsg) {
                     console.log('something wrong with currentPosition.coords')
@@ -58,7 +53,13 @@ const UserLocation = () => {
 
     return (
         <Text>
-            {regionName ? 'Your current location is: \n' + regionName.data[0].region + ', ' + regionName.data[0].country  + "\n" + regionName.data[0].latitude + "\n" + regionName.data[0].longitude: 'Waiting...'}
+            {regionName ?
+                'Your current location is: \n' +
+                regionName.data[0].region + ', ' +
+                regionName.data[0].country  + "\n" +
+                regionName.data[0].latitude + "\n" +
+                regionName.data[0].longitude
+                : 'Waiting...'}
         </Text>
 
     )

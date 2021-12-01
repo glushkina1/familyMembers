@@ -8,7 +8,6 @@ import MemberList from '../components/MemberList';
 const HomeScreen = ({route, navigation}) => {
     const [loading, setLoading] = useState(true);
 
-
     // if (loading) {
     //     return <ActivityIndicator color='red' size="large" style={styles.loader}/>;
     // }
@@ -16,7 +15,9 @@ const HomeScreen = ({route, navigation}) => {
 
     return (
         <View style={styles.homeScreen}>
-            <UserLocation/>
+            <View>
+                <UserLocation/>
+            </View>
             <View style={styles.memberListStyle}>
                 <MemberList navigation={navigation}/>
             </View>
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
     homeScreen: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#F8F8FF'
+        backgroundColor: '#F8F8FF',
     },
     buttonPlus: {
         position: "absolute",
@@ -46,13 +47,17 @@ const styles = StyleSheet.create({
     memberListStyle: {
         ...Platform.select({
             ios: {
-                width: Dimensions.get('window').width
+                width: Dimensions.get('window').width * 0.9,
+                height: Dimensions.get('window').height * 0.7,
+                paddingBottom: 20,
             },
             web: {
                 width: '80%',
             },
             android: {
-                width: Dimensions.get('window').width
+                width: Dimensions.get('window').width * 0.9,
+                height: Dimensions.get('window').height * 0.7,
+                paddingBottom: 20,
             }
         }),
     },

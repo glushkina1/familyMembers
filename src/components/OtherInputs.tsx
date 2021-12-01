@@ -1,5 +1,5 @@
-import inputStyles from "../globalCss/inputStyle"
-import {TextInput, View} from 'react-native';
+import inputStyles from "../globalStyles/inputStyle"
+import {Keyboard, TextInput, TouchableWithoutFeedback, View} from 'react-native';
 import React from "react";
 
 type Props = {
@@ -14,6 +14,12 @@ const OtherInputs = ({personName, setPersonName, personRelationship, setPersonRe
     const upperCase = (text: string) => {
         setPersonName(text.charAt(0).toUpperCase() + text.slice(1))
     }
+    const DismissKeyboard = ({ children }) => (
+        <TouchableWithoutFeedback
+            onPress={() => Keyboard.dismiss()}> {children}
+        </TouchableWithoutFeedback>
+    );
+
 
     return (
         <View style={inputStyles.containerInput}>

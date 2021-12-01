@@ -1,7 +1,7 @@
 import {Platform, StyleSheet} from "react-native";
 
 
-export default StyleSheet.create({
+const inputStyles = StyleSheet.create({
     input: {
         ...Platform.select({
             ios: {
@@ -24,7 +24,6 @@ export default StyleSheet.create({
         marginTop: 9,
     },
     containerInput: {
-
         ...Platform.select({
             ios: {
                 width: '85%',
@@ -42,3 +41,4 @@ export default StyleSheet.create({
     }
     });
 
+export default inputStyles;

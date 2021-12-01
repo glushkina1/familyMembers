@@ -7,9 +7,10 @@ const initialState = {
             relationship: 'pipa',
             sex: 'male',
             image: '',
-            phoneNumber: '99999999999',
+            phoneNumber: '9999999999',
             latitude: 99.99,
-            longitude: 99.99
+            longitude: 99.99,
+            distance:44,
         }
     ],
 };

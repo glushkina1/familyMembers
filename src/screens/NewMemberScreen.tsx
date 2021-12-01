@@ -7,6 +7,7 @@ import PhoneNumberInput from "../components/PhoneNumberInput";
 import OtherInputs from "../components/OtherInputs";
 import GenderContainer from "../components/GenderContainer";
 import ImageComponent from "../components/ImageComponent";
+import {distanceCalculation} from '../components/Distance';
 
 
 const NewMemberScreen = ({route, navigation}) => {
@@ -70,7 +71,8 @@ const NewMemberScreen = ({route, navigation}) => {
 
                 let fakeLat = Math.floor(Math.random() * 100)
                 let fakeLon = Math.floor(Math.random() * 100)
-                // let distance = distanceCalculation()
+
+
 
                 let newMember = {
                     name: personName,
@@ -78,9 +80,9 @@ const NewMemberScreen = ({route, navigation}) => {
                     sex: personSex,
                     image: personImage || '',
                     phoneNumber: phoneNumber,
-                    latitude:fakeLat,
-                    longitude:fakeLon,
-                    // distance: distance,
+                    latitude: fakeLat,
+                    longitude: fakeLon,
+                    distance: 0,
                 }
                 dispatch(saveMember(newMember));
                 navigation.navigate('HomeScreen');
@@ -92,38 +94,40 @@ const NewMemberScreen = ({route, navigation}) => {
 
     }
 
+
+
     return (
-        <View style={styles.newMemberScreen}>
-            <OtherInputs personName={personName}
-                         setPersonName={setPersonName}
-                         personRelationship={personRelationship}
-                         setPersonRelationship={setPersonRelationship}/>
-            <PhoneNumberInput personPhoneNumber={personPhoneNumber}
-                              setPersonPhoneNumber={setPersonPhoneNumber}/>
-            {showErrorUsedNumber && <Text style={{color: 'red'}}>This member is already in your list</Text>}
-            {showErrorAllFields && <Text style={{color: 'red'}}>Error, fill in all the fields</Text>}
-            {showErrorValidPhoneNumber && <Text style={{color: 'red'}}>Please enter invalid phone number</Text>}
-            <GenderContainer personSex={personSex} setPersonSex={setPersonSex}/>
-            <ImageComponent personImage={personImage} setPersonImage={setPersonImage}/>
-            <View style={styles.buttonsContainer}>
-                <Button icon="chevron-down-circle-outline"
-                        mode='text'
-                        compact={true}
-                        style={styles.saveButton}
-                        labelStyle={{color: 'white', fontSize: 14}}
-                        onPress={() => saveMemberHandler()}>
-                    save
-                </Button>
-                <Button icon="cancel"
-                        mode='text'
-                        compact={true}
-                        style={styles.cancelButton}
-                        labelStyle={{color: 'white', fontSize: 14}}
-                        onPress={() => navigation.navigate('HomeScreen')}>
-                    cancel
-                </Button>
+            <View style={styles.newMemberScreen}>
+                <OtherInputs personName={personName}
+                             setPersonName={setPersonName}
+                             personRelationship={personRelationship}
+                             setPersonRelationship={setPersonRelationship}/>
+                <PhoneNumberInput personPhoneNumber={personPhoneNumber}
+                                  setPersonPhoneNumber={setPersonPhoneNumber}/>
+                {showErrorUsedNumber && <Text style={{color: 'red'}}>This member is already in your list</Text>}
+                {showErrorAllFields && <Text style={{color: 'red'}}>Error, fill in all the fields</Text>}
+                {showErrorValidPhoneNumber && <Text style={{color: 'red'}}>Please enter invalid phone number</Text>}
+                <GenderContainer personSex={personSex} setPersonSex={setPersonSex}/>
+                <ImageComponent personImage={personImage} setPersonImage={setPersonImage}/>
+                <View style={styles.buttonsContainer}>
+                    <Button icon="chevron-down-circle-outline"
+                            mode='text'
+                            compact={true}
+                            style={styles.saveButton}
+                            labelStyle={{color: 'white', fontSize: 14}}
+                            onPress={() => saveMemberHandler()}>
+                        save
+                    </Button>
+                    <Button icon="cancel"
+                            mode='text'
+                            compact={true}
+                            style={styles.cancelButton}
+                            labelStyle={{color: 'white', fontSize: 14}}
+                            onPress={() => navigation.navigate('HomeScreen')}>
+                        cancel
+                    </Button>
+                </View>
             </View>
-        </View>
     );
 
 

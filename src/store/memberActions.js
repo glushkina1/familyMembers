@@ -7,7 +7,7 @@ export const saveMember = (newMember) => {
     }
 }
 export const updateMemberLocation = (phoneNumber, latitude, longitude) => {
-    console.log(3333, latitude, longitude)
+    // console.log(3333, latitude, longitude)
     return {
         type:'UPDATE_MEMBER_LOCATION',
         payload: {phoneNumber: phoneNumber, latitude: latitude, longitude: longitude},
