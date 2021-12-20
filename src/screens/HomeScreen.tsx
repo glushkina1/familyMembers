@@ -61,13 +61,18 @@ const styles = StyleSheet.create({
     },
     logOut: {
         position: "absolute",
-        top: 10,
         right: 23,
-    },
-    buttonPlusPlus: {
-        position: "absolute",
-        top: 10,
-        left: 10,
+        ...Platform.select({
+            ios: {
+                top: 40,
+            },
+            web: {
+                top: 20,
+            },
+            android: {
+                top: 40,
+            }
+        }),
     },
     buttonPlus: {
         position: "absolute",

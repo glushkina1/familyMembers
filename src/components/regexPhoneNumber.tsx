@@ -32,6 +32,7 @@ export const regexPhoneNumber = (text) => {
 }
 
 export const deleteLastNum = (phoneNumber) => {
+
     let lastNumber = phoneNumber;
     let lastChar = '';
 
@@ -41,5 +42,6 @@ export const deleteLastNum = (phoneNumber) => {
             break;
         lastNumber = lastNumber.slice(0, i)
     }
+    console.log(33,lastNumber)
     return lastNumber;
 };

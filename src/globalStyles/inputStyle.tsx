@@ -3,17 +3,15 @@ import {Platform, StyleSheet} from "react-native";
 
 const inputStyles = StyleSheet.create({
     input: {
+        width: '100%',
         ...Platform.select({
             ios: {
-                width: '85%',
                 fontSize: 20,
             },
             web: {
-                width: '100%',
                 fontSize: 28,
             },
             android: {
-                width: '85%',
                 fontSize: 20,
             }
         }),
@@ -24,9 +22,13 @@ const inputStyles = StyleSheet.create({
         marginTop: 9,
     },
     containerInput: {
+        width:'100%',
+        // borderWidth:5,
+        // borderColor:'green',
+        alignItems:'center',
         ...Platform.select({
             ios: {
-                width: '85%',
+                width:'100%',
                 fontSize: 20,
             },
             web: {
@@ -34,7 +36,7 @@ const inputStyles = StyleSheet.create({
                 fontSize: 28,
             },
             android: {
-                width: '85%',
+                width:'100%',
                 fontSize: 20,
             }
         }),

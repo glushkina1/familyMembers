@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Platform} from 'react-native';
 import {useSelector} from 'react-redux';
 import {Provider} from "react-native-paper";
@@ -15,13 +15,15 @@ export const MemberList = ({navigation}: Props) => {
     const members = useSelector((state: any) => state.members);
     const mainUser = useSelector((state: any) => state.myLocation);
 
-    if (disableListener === false) {
-        setDisableListener(true)
-        members.map(function (member) {
-            startListenLocation(member.phoneNumber)
-        })
 
-    }
+        if (disableListener === false) {
+            setDisableListener(true)
+            members.map(function (member) {
+                startListenLocation(member.phoneNumber)
+            })
+        }
+
+
 
     return (
         <Provider>

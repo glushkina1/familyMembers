@@ -13,7 +13,7 @@ const Timestamp = ({MemberTimestamp}: Props) => {
         let NowTimestamp = new Date().getTime()/1000;
 
         if (MemberTimestamp === null ) {
-            return 'no data';
+            return 'updating...';
         }
 
         let diffTimeSecs = Math.round(NowTimestamp - MemberTimestamp)
@@ -33,7 +33,7 @@ const Timestamp = ({MemberTimestamp}: Props) => {
 
     return (
         <View>
-            <Text>{getTimestamp()}</Text>
+            <Text style={{ fontVariant:['small-caps']}}>{getTimestamp()}</Text>
         </View>
     );
 };

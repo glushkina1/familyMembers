@@ -61,7 +61,6 @@ const UserLocation = ({userPhoneNumber}:Props) => {
 
     return (
         <Text>
-            Your phone Number is: + {userPhoneNumber}  {"\n"}
             {regionName ?
                 'Your current location is: ' +
                 regionName.data[0].region + ', ' +

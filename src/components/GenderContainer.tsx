@@ -57,28 +57,28 @@ const GenderContainer = ({personSex, setPersonSex}:Props) => {
 
 const styles = StyleSheet.create({
     wholeGenderContainer: {
+        // borderWidth:2,
+        // borderColor:'red',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
         ...Platform.select({
             ios: {
-                flexDirection: 'column',
-                borderWidth: 1,
-                borderColor: 'black',
+                width: '80%',
             },
             web: {
                 width: '40%',
-                justifyContent: 'space-around',
-                flexDirection: 'row',
             },
             android: {
-                flexDirection: 'column',
+                width: '80%',
             }
         }),
-        marginTop: 10,
+        marginTop: 15,
     },
     textGender: {
         fontSize: 22,
         ...Platform.select({
             ios: {
-                alignItems: 'center',
+                alignItems: 'flex-start',
             },
             web: {
                 alignItems: 'center',
@@ -90,17 +90,19 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     genderContainer: {
+        flexDirection: 'row',
+        justifyContent: "space-around",
         ...Platform.select({
             ios: {
-                flexDirection: 'row',
-                justifyContent: "space-between",
+
             },
-            web: {},
+            web: {
+
+            },
             android: {
-                flexDirection: 'row',
+
             }
         }),
-        justifyContent: 'center',
         alignItems: 'center'
     },
 });

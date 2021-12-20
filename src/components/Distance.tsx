@@ -12,7 +12,7 @@ const Distance = ({MemberLatitude, MemberLongitude, MainUserLatitude, MainUserLo
 
      const getDistance = () => {
          if (MemberLatitude == null || MemberLongitude == null ) {
-             return 'no data';
+             return 'updating...';
          }
 
          let R = 6371; // km

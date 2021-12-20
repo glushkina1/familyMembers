@@ -15,14 +15,8 @@ type Props = {
 }
 
 export const FlatListMobile = ({navigation, members, mainUser} : Props) => {
-    const [count, setCount] = useState(0)
     const dispatch = useDispatch();
-    const keyboardDismiss = () => {
-        Keyboard.dismiss()
-        setCount( count + 1)
-    };
 
-    console.log(count)
     const deleteMemberHandler = (phoneNumber) => {
         dispatch(deleteMember(phoneNumber))
     };
