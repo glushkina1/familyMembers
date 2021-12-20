@@ -13,7 +13,7 @@ const Timestamp = ({MemberTimestamp}: Props) => {
         let NowTimestamp = new Date().getTime()/1000;
 
         if (MemberTimestamp === null ) {
-            return -1;
+            return 'no data';
         }
 
         let diffTimeSecs = Math.round(NowTimestamp - MemberTimestamp)

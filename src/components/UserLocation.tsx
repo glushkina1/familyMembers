@@ -30,6 +30,8 @@ const UserLocation = ({userPhoneNumber}:Props) => {
                     //обновление локации гл пользователя
                     let currentPosition = await Location.getCurrentPositionAsync();
 
+                console.log(currentPosition)
+
                     if (currentPosition.coords) {
                         const res = await fetch(`http://api.positionstack.com/v1/reverse?access_key=${positionstack_api_key}&query=${currentPosition.coords.latitude},${currentPosition.coords.longitude}`);
                         const resJson = await res.json();
@@ -59,12 +61,12 @@ const UserLocation = ({userPhoneNumber}:Props) => {
 
     return (
         <Text>
+            Your phone Number is: + {userPhoneNumber}  {"\n"}
             {regionName ?
                 'Your current location is: ' +
                 regionName.data[0].region + ', ' +
-                regionName.data[0].country  + "\n" +
-                'Your phone Number is: ' + userPhoneNumber
-                : 'Waiting...'}
+                regionName.data[0].country  + "\n"
+                : 'Updating location...'}
         </Text>
 
     )

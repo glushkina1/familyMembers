@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Keyboard, StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
 import {saveMember, updateMember} from "../store/memberActions";
 import {Button} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
@@ -23,6 +23,13 @@ const NewMemberScreen = ({route, navigation}) => {
     const [personTimestamp, setPersonTimestamp] = useState(null);
 
 
+    const [count, setCount] = useState(0)
+    const keyboardDismiss = () => {
+        Keyboard.dismiss()
+        setCount( count + 1)
+    };
+
+    console.log(22,count)
 
     const dispatch = useDispatch();
     const members = useSelector((state: any) => state.members);
@@ -104,10 +111,12 @@ const NewMemberScreen = ({route, navigation}) => {
 
     return (
             <View style={styles.newMemberScreen}>
+                <TouchableWithoutFeedback onPress={(keyboardDismiss)} accessible={false}>
                 <OtherInputs personName={personName}
                              setPersonName={setPersonName}
                              personRelationship={personRelationship}
                              setPersonRelationship={setPersonRelationship}/>
+                </TouchableWithoutFeedback>
                 <PhoneNumberInput personPhoneNumber={personPhoneNumber}
                                   setPersonPhoneNumber={setPersonPhoneNumber}/>
                 {showErrorUsedNumber && <Text style={{color: 'red'}}>This member is already in your list</Text>}

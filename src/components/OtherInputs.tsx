@@ -1,6 +1,7 @@
 import inputStyles from "../globalStyles/inputStyle"
 import {Keyboard, TextInput, TouchableWithoutFeedback, View} from 'react-native';
-import React from "react";
+import React, {useState} from "react";
+import {useDispatch} from "react-redux";
 
 type Props = {
     personName: string,
@@ -14,11 +15,6 @@ const OtherInputs = ({personName, setPersonName, personRelationship, setPersonRe
     const upperCase = (text: string) => {
         setPersonName(text.charAt(0).toUpperCase() + text.slice(1))
     }
-    const DismissKeyboard = ({ children }) => (
-        <TouchableWithoutFeedback
-            onPress={() => Keyboard.dismiss()}> {children}
-        </TouchableWithoutFeedback>
-    );
 
 
     return (
@@ -38,7 +34,6 @@ const OtherInputs = ({personName, setPersonName, personRelationship, setPersonRe
                 style={inputStyles.input}
             />
         </View>
-
     )
 
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {FlatList, Image, Keyboard, Text, TouchableOpacity, TouchableWithoutFeedback, View} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {Provider} from "react-native-paper";
@@ -15,9 +15,14 @@ type Props = {
 }
 
 export const FlatListMobile = ({navigation, members, mainUser} : Props) => {
-
+    const [count, setCount] = useState(0)
     const dispatch = useDispatch();
+    const keyboardDismiss = () => {
+        Keyboard.dismiss()
+        setCount( count + 1)
+    };
 
+    console.log(count)
     const deleteMemberHandler = (phoneNumber) => {
         dispatch(deleteMember(phoneNumber))
     };
@@ -25,7 +30,6 @@ export const FlatListMobile = ({navigation, members, mainUser} : Props) => {
 
     return (
         <Provider>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View style={flatListStyles.personComponentStyle}>
                 {members.length > 0 ?
                     <FlatList
@@ -67,7 +71,6 @@ export const FlatListMobile = ({navigation, members, mainUser} : Props) => {
                     /> : <Text>No members in your family</Text>
                 }
             </View>
-            </TouchableWithoutFeedback>
         </Provider>
     )
 }

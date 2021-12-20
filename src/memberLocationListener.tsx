@@ -12,8 +12,10 @@ export const startListenLocation = (phoneNumber: number) => {
 
     const reference = ref(db, 'members/' + phoneNumber);
     onValue(reference, (snapshot) => {
-        const data = snapshot.val();
-        dispatch(updateMemberLocation(phoneNumber, data.latitude, data.longitude, data.timestamp))
+        if (snapshot.val()) {
+            const data = snapshot.val();
+            dispatch(updateMemberLocation(phoneNumber, data.latitude, data.longitude, data.timestamp))
+        }
     })
 };
 

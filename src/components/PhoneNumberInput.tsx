@@ -16,6 +16,7 @@ const PhoneNumberInput = ({personPhoneNumber, setPersonPhoneNumber}: Props) => {
     }
 
 
+
     return (
         <View style={inputStyles.containerInput}>
             <TextInput

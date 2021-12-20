@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Dimensions, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Dimensions, Keyboard, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import UserLocation from "../components/UserLocation";
 import MemberList from '../components/MemberList';
@@ -63,6 +63,11 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 10,
         right: 23,
+    },
+    buttonPlusPlus: {
+        position: "absolute",
+        top: 10,
+        left: 10,
     },
     buttonPlus: {
         position: "absolute",
