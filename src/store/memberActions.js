@@ -6,11 +6,10 @@ export const saveMember = (newMember) => {
         payload: newMember,
     }
 }
-export const updateMemberLocation = (phoneNumber, latitude, longitude) => {
-    // console.log(3333, latitude, longitude)
+export const updateMemberLocation = (phoneNumber, latitude, longitude, timestamp) => {
     return {
         type:'UPDATE_MEMBER_LOCATION',
-        payload: {phoneNumber: phoneNumber, latitude: latitude, longitude: longitude},
+        payload: {phoneNumber: phoneNumber, latitude: latitude, longitude: longitude, timestamp:timestamp},
     }
 }
 
@@ -31,6 +30,13 @@ export const deleteMember = (phoneNumber) => {
 export const resetEverything = () => {
     return {
         type: "RESET_EVERYTHING",
+    }
+}
+
+export const updateMainUser = (latitude, longitude, timestamp) => {
+    return {
+        type: "UPDATE_MAIN_USER",
+        payload: {latitude: latitude, longitude: longitude, timestamp: timestamp}
     }
 }
 

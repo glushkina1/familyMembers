@@ -1,18 +1,22 @@
 import React from 'react';
-import {FlatList, StyleSheet, Text, TouchableOpacity, View, Image, TouchableWithoutFeedback, Keyboard} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {FlatList, Image, Keyboard, Text, TouchableOpacity, TouchableWithoutFeedback, View} from 'react-native';
+import {useDispatch} from 'react-redux';
 import {Provider} from "react-native-paper";
 import {Ionicons} from "@expo/vector-icons";
 import {deleteMember} from '../store/memberActions';
 import flatListStyles from "../globalStyles/flatListStyles";
+import Distance from "./Distance";
+import Timestamp from "./Timestamp";
 
+type Props = {
+    members: any,
+    mainUser: any,
+    navigation:any,
+}
 
-export const FlatListMobile = ({navigation}) => {
+export const FlatListMobile = ({navigation, members, mainUser} : Props) => {
 
-    // const userPhoneNumber: number = 79955981630;
     const dispatch = useDispatch();
-
-    const members = useSelector((state: any) => state.members);
 
     const deleteMemberHandler = (phoneNumber) => {
         dispatch(deleteMember(phoneNumber))
@@ -36,17 +40,21 @@ export const FlatListMobile = ({navigation}) => {
                                 {item.image ? <Image source={{uri: item.image}} style={flatListStyles.personImage}/>
                                     : <Image source={require('../assets/cat.png')} style={flatListStyles.personImage}/>}
                                 <View style={flatListStyles.personParams}>
-                                    <Text style={flatListStyles.textParams}>
-                                        {item.name}
-                                    </Text>
-                                    <Text style={flatListStyles.textParams}>
-                                        {item.relationship}
-                                    </Text>
+                                    <View>
+                                        <Text style={flatListStyles.textParams}>
+                                            {item.name}
+                                        </Text>
+                                        <Text style={flatListStyles.textParams}>
+                                            {item.relationship}
+                                        </Text>
+                                    </View>
                                 </View>
                                 <View style={flatListStyles.personParams}>
-                                    <Text style={flatListStyles.textParams}>
-                                        {item.distance}km
-                                    </Text>
+                                    <Distance MainUserLatitude={mainUser.latitude} MainUserLongitude={mainUser.longitude}
+                                              MemberLatitude={item.latitude} MemberLongitude={item.longitude}/>
+                                </View>
+                                <View style={flatListStyles.personParams}>
+                                    <Timestamp MemberTimestamp={item.timestamp}/>
                                 </View>
                                 <View style={{...flatListStyles.personParams,...flatListStyles.deleteIcon}}>
                                     <TouchableOpacity onPress={() => deleteMemberHandler(item.phoneNumber)}>
@@ -63,10 +71,6 @@ export const FlatListMobile = ({navigation}) => {
         </Provider>
     )
 }
-
-// const styles = StyleSheet.create({
-//
-// });
 
 
 export default FlatListMobile;

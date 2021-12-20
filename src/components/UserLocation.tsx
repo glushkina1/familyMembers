@@ -1,17 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import * as Location from "expo-location";
 import {Text} from "react-native";
-import { positionstack_api_key } from "../../config.json"
-import {setCurrentLocation} from "../firebase.config";
+import {positionstack_api_key} from "../../config.json"
+import {updateMainUser} from "../store/memberActions";
+import {useDispatch} from "react-redux";
+import { setCurrentLocation } from '../memberLocationListener';
 
 
-const UserLocation = () => {
+type Props = {
+    userPhoneNumber: string,
+}
+
+const UserLocation = ({userPhoneNumber}:Props) => {
     const [regionName,setRegionName] = useState(null);
+    const dispatch = useDispatch();
 
-    const userPhoneNumber: number = 79955981630;
-
-    // setCurrentLocation(1111111111, 11.11, 11.11, 1637613747.789)
-    // setCurrentLocation(9999999999, 88.99, 88.99, 1636613747.789)
 
     useEffect(() => {
         (async () => {
@@ -24,8 +27,7 @@ const UserLocation = () => {
                     return;
                 }
 
-                const  interval = setInterval(async () => {
-
+                    //обновление локации гл пользователя
                     let currentPosition = await Location.getCurrentPositionAsync();
 
                     if (currentPosition.coords) {
@@ -33,13 +35,16 @@ const UserLocation = () => {
                         const resJson = await res.json();
                         setRegionName(resJson);
                         let timestamp = new Date().getTime()/1000;
-                        let lat = parseFloat(currentPosition.coords.latitude.toFixed(2));
-                        let long = parseFloat(currentPosition.coords.longitude.toFixed(2));
-                        console.log('set location every 1 min');
-                        setCurrentLocation(userPhoneNumber, lat, long, timestamp)
+                        let latitude = parseFloat(currentPosition.coords.latitude.toFixed(2));
+                        let longitude = parseFloat(currentPosition.coords.longitude.toFixed(2));
+                        if (userPhoneNumber.length > 0 && currentPosition.coords) {
+                            setCurrentLocation(parseInt(userPhoneNumber), latitude, longitude, timestamp)
+                            dispatch(updateMainUser(latitude, longitude, timestamp))
+                        }
                     }
-                    return;
-                }, 3000000);
+                const  interval = setInterval(async () => {
+
+                }, 20000);
 
                 return () => clearInterval(interval);
 
@@ -48,17 +53,17 @@ const UserLocation = () => {
                     return;
                 }
         })();
-    }, []);
+    }, [userPhoneNumber]);
+
 
 
     return (
         <Text>
             {regionName ?
-                'Your current location is: \n' +
+                'Your current location is: ' +
                 regionName.data[0].region + ', ' +
                 regionName.data[0].country  + "\n" +
-                regionName.data[0].latitude + "\n" +
-                regionName.data[0].longitude
+                'Your phone Number is: ' + userPhoneNumber
                 : 'Waiting...'}
         </Text>
 

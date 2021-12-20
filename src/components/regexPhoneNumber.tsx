@@ -27,7 +27,6 @@ export const regexPhoneNumber = (text) => {
             phoneNum = `+${countryCode} (${areaCode}) ${middle}-${preLast}-${last}`
         }
     }
-    console.log('file', phoneNum)
     return phoneNum;
 
 }

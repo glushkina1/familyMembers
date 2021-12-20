@@ -1,29 +1,52 @@
 import React, {useEffect, useState} from 'react';
-import {Dimensions, Platform, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Dimensions, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import UserLocation from "../components/UserLocation";
 import MemberList from '../components/MemberList';
+import {getAuth, signOut} from '@firebase/auth';
+
+const HomeScreen = ({ navigation}) => {
+    const [userPhoneNumber, setUserPhoneNumber] = useState('0')
 
 
-const HomeScreen = ({route, navigation}) => {
-    const [loading, setLoading] = useState(true);
-
-    // if (loading) {
-    //     return <ActivityIndicator color='red' size="large" style={styles.loader}/>;
-    // }
+    const auth = getAuth();
+    const handleLogout = () => {
+        signOut(auth).then(() => {
+            navigation.navigate('LoginScreen')
+        }).catch((error) => {
+            console.log('error with log out')
+        });
+    };
+    useEffect(() => {
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                let ph = user.email.match(/[0-9]+/) || 0
+                setUserPhoneNumber(ph[0])
+                navigation.navigate("HomeScreen")
+            } else {
+                navigation.navigate("LoginScreen")
+            }
+        })
+    }, [])
 
 
     return (
         <View style={styles.homeScreen}>
             <View>
-                <UserLocation/>
+                <UserLocation userPhoneNumber={userPhoneNumber}/>
+            </View>
+            <View style={styles.logOut}>
+                <TouchableOpacity onPress={() => handleLogout()}>
+                    <Ionicons name='log-out-outline' size={30} color="grey"/>
+                    <Text style={{color: 'grey', fontSize: 12}}>log out</Text>
+                </TouchableOpacity>
             </View>
             <View style={styles.memberListStyle}>
                 <MemberList navigation={navigation}/>
             </View>
             <View style={styles.buttonPlus}>
                 <TouchableOpacity onPress={() => navigation.navigate('NewMemberScreen')}>
-                    <Ionicons name='add-circle-outline' size={60} color="blue"/>
+                    <Ionicons name='add-circle-outline' size={60} color="#007FFF"/>
                 </TouchableOpacity>
             </View>
         </View>
@@ -35,6 +58,11 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         backgroundColor: '#F8F8FF',
+    },
+    logOut: {
+        position: "absolute",
+        top: 10,
+        right: 23,
     },
     buttonPlus: {
         position: "absolute",

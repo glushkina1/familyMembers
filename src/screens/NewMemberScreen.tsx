@@ -7,7 +7,6 @@ import PhoneNumberInput from "../components/PhoneNumberInput";
 import OtherInputs from "../components/OtherInputs";
 import GenderContainer from "../components/GenderContainer";
 import ImageComponent from "../components/ImageComponent";
-import {distanceCalculation} from '../components/Distance';
 
 
 const NewMemberScreen = ({route, navigation}) => {
@@ -19,6 +18,12 @@ const NewMemberScreen = ({route, navigation}) => {
     const [showErrorUsedNumber, setShowErrorUsedNumber] = useState(false);
     const [showErrorValidPhoneNumber, setShowErrorValidPhoneNumber] = useState(false);
     const [personSex, setPersonSex] = useState('male');
+    const [personLatitude, setPersonLatitude] = useState(null);
+    const [personLongitude, setPersonLongitude] = useState(null);
+    const [personTimestamp, setPersonTimestamp] = useState(null);
+
+
+
     const dispatch = useDispatch();
     const members = useSelector((state: any) => state.members);
 
@@ -32,6 +37,9 @@ const NewMemberScreen = ({route, navigation}) => {
                 setPersonRelationship(memberFound.relationship);
                 setPersonImage(memberFound.image)
                 setPersonPhoneNumber(memberFound.phoneNumber)
+                setPersonLatitude(memberFound.latitude)
+                setPersonLongitude(memberFound.longitude)
+                setPersonTimestamp(memberFound.timestamp)
             }
         }, [members]);
     }
@@ -51,6 +59,9 @@ const NewMemberScreen = ({route, navigation}) => {
                 sex: personSex,
                 image: personImage || '',
                 phoneNumber: phoneNumber,
+                latitude: personLatitude,
+                longitude: personLongitude,
+                timestamp: personTimestamp,
             }
             dispatch(updateMember(updMember));
             navigation.navigate('HomeScreen');
@@ -69,20 +80,15 @@ const NewMemberScreen = ({route, navigation}) => {
             } else {
                 setShowErrorValidPhoneNumber(false)
 
-                let fakeLat = Math.floor(Math.random() * 100)
-                let fakeLon = Math.floor(Math.random() * 100)
-
-
-
                 let newMember = {
                     name: personName,
                     relationship: personRelationship,
                     sex: personSex,
                     image: personImage || '',
                     phoneNumber: phoneNumber,
-                    latitude: fakeLat,
-                    longitude: fakeLon,
-                    distance: 0,
+                    latitude: null,
+                    longitude: null,
+                    timestamp: null,
                 }
                 dispatch(saveMember(newMember));
                 navigation.navigate('HomeScreen');

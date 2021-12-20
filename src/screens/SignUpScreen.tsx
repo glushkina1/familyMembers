@@ -3,16 +3,21 @@ import {createUserWithEmailAndPassword, getAuth} from "@firebase/auth"
 import {KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {deleteLastNum, regexPhoneNumber} from "../components/regexPhoneNumber";
 
-const SignUpScreen = ({route, navigation}) => {
+const SignUpScreen = ({ navigation}) => {
 
     const [password, setPassword] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [error, setError] = useState(false);
 
     const auth = getAuth();
 
     const handleSignUp = (phoneNumber, password) => {
         let modifiedNum = phoneNumber.replace(/\D/gi, '') || ''
         let email = modifiedNum + '@domain.com';
+        if (password.length < 7) {
+            setError(true);
+            return;
+        }
 
         createUserWithEmailAndPassword(auth, email, password)
             .then(userCredentials => {
@@ -48,19 +53,20 @@ const SignUpScreen = ({route, navigation}) => {
                     style={styles.input}
                     secureTextEntry
                 />
+                {error && <Text style={{color:'#CE3032'}}>password should be longer than 6 chars</Text>}
             </View>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
                     onPress={() => navigation.navigate('LoginScreen')}
-                    style={styles.button}
+                    style={[styles.button, styles.buttonOutline]}
                 >
-                    <Text style={styles.buttonText}>Go back</Text>
+                    <Text style={styles.buttonOutlineText}>Go back</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => handleSignUp(phoneNumber, password)}
-                    style={[styles.button, styles.buttonOutline]}
+                    style={styles.button}
                 >
-                    <Text style={styles.buttonOutlineText}>Submit</Text>
+                    <Text style={styles.buttonText}>Submit</Text>
                 </TouchableOpacity>
             </View>
 
@@ -118,6 +124,7 @@ const styles = StyleSheet.create({
         padding: 15,
         borderRadius: 10,
         alignItems: 'center',
+        marginTop: 5,
     },
     buttonText: {
         color: 'white',
@@ -126,12 +133,11 @@ const styles = StyleSheet.create({
     },
     buttonOutline: {
         backgroundColor: 'white',
-        marginTop: 5,
-        borderColor: '#0782F9',
+        borderColor: '#ddd',
         borderWidth: 2,
     },
     buttonOutlineText: {
-        color: '#0782F9',
+        color: 'grey',
         fontWeight: '700',
         fontSize: 13,
     },

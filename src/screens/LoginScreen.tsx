@@ -1,56 +1,32 @@
-import { useNavigation } from '@react-navigation/core'
-import React, { useEffect, useState } from 'react'
-import {getAuth, onAuthStateChanged, signInWithCustomToken, createUserWithEmailAndPassword, signInWithEmailAndPassword} from "@firebase/auth"
+import React, {useEffect, useState} from 'react'
+import {getAuth, onAuthStateChanged, signInWithEmailAndPassword} from "@firebase/auth"
 import {KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
-import { StackNavigationProp } from '@react-navigation/stack'
-import { ParamListBase } from '@react-navigation/native'
+import {deleteLastNum, regexPhoneNumber} from "../components/regexPhoneNumber";
 
-const LoginScreen = ({route, navigation}) => {
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
+const LoginScreen = ({navigation}) => {
 
 
-    // const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState(false);
+
+
     const auth = getAuth();
-    const user = auth.currentUser;
 
-
-    // useEffect(() => {
-    //     onAuthStateChanged(auth, user => {
-    //         if (user != null) {
-    //             console.log('We are authenticated now!');
-    //         }
-    //
-    //         // Do other things
-    //     });
-    //     const unsubscribe = auth.onAuthStateChanged(user => {
-    //         if (user) {
-    //             navigation.replace("Home")
-    //         }
-    //     })
-    //
-    //     return unsubscribe
-    // }, [])
-
-    // const handleSignUp =  (username, password) => {
-    //     let email = username + '@domain.com'
-    //     createUserWithEmailAndPassword(auth, email, password)
-    //         .then(userCredentials => {
-    //             const user = userCredentials.user;
-    //             console.log('Registered with:', user.email, 'username:', username);
-    //         })
-    //         .catch(error => alert(error.message))
-    //     navigation.navigate('HomeScreen');
-    // }
-
-    // const handleLogin = () => {
-    //     signInWithEmailAndPassword(auth, email, password)
-    //         .then(userCredentials => {
-    //             const user = userCredentials.user;
-    //             console.log('Logged in with:', user.email);
-    //         })
-    //         .catch(error => alert(error.message))
-    // }
+    const handleLogin = (phoneNumber) => {
+        let modifiedNum = phoneNumber.replace(/\D/gi, '') || ''
+        let email = modifiedNum + '@domain.com';
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                navigation.navigate('HomeScreen')
+            })
+            .catch((error) => {
+                setError(true)
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log('error in login screen', errorCode, errorMessage)
+            });
+    };
 
     return (
         <KeyboardAvoidingView
@@ -59,10 +35,15 @@ const LoginScreen = ({route, navigation}) => {
         >
             <View style={styles.inputContainer}>
                 <TextInput
-                    placeholder="Email"
-                    value={username}
-                    onChangeText={text => setUsername(text)}
+                    placeholder="Enter phone number"
+                    value={phoneNumber}
+                    onChangeText={text => setPhoneNumber(regexPhoneNumber(text))}
                     style={styles.input}
+                    onKeyPress={({nativeEvent}) => {
+                        if (nativeEvent.key === 'Backspace') {
+                            setPhoneNumber(deleteLastNum);
+                        }
+                    }}
                 />
                 <TextInput
                     placeholder="Password"
@@ -72,10 +53,10 @@ const LoginScreen = ({route, navigation}) => {
                     secureTextEntry
                 />
             </View>
-
+            {error && <Text style={{color: '#D73A3A'}}>Phone Number or password is incorrect</Text>}
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
-                    onPress={() => null}
+                    onPress={() => handleLogin(phoneNumber)}
                     style={styles.button}
                 >
                     <Text style={styles.buttonText}>Login</Text>

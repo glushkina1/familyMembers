@@ -1,49 +1,26 @@
 import React from 'react';
 import {FlatList, Image, Text, TouchableOpacity, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {Provider} from "react-native-paper";
 import {Ionicons} from "@expo/vector-icons";
 import {deleteMember} from '../store/memberActions';
 import flatListStyles from "../globalStyles/flatListStyles";
+import Distance from './Distance';
+import Timestamp from "./Timestamp";
 
-export const FlatListWeb = ({navigation}) => {
+type Props = {
+    members: any,
+    mainUser: any,
+    navigation:any,
+}
 
-    const userPhoneNumber: number = 79955981630;
+export const FlatListWeb = ({navigation, members, mainUser}: Props) => {
+
     const dispatch = useDispatch();
-
-
-    const members = useSelector((state: any) => state.members);
-
-
-
-
-
-    // const handleDistance = (phoneNumber: number) => {
-    //     // let hours = date.getHours();
-    //     // let minutes = "0" + date.getMinutes();
-    //     // let seconds = "0" + date.getSeconds();
-    //
-    //     // var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-    //
-    //
-    //     return 0;
-    // };
-
 
     const deleteMemberHandler = (phoneNumber) => {
         dispatch(deleteMember(phoneNumber))
     };
-
-    const formatPhoneNumberBack = (phoneNumber) => {
-        let countryCode = phoneNumber.charAt(0);
-        let areaCode = phoneNumber.slice(1, 4);
-        let middle = phoneNumber.slice(4, 7);
-        let preLast = phoneNumber.slice(7, 9);
-        let last = phoneNumber.slice(9, 11);
-        return `+${countryCode} (${areaCode}) ${middle}-${preLast}-${last}`
-    };
-
-
 
     return (
         <Provider>
@@ -76,20 +53,11 @@ export const FlatListWeb = ({navigation}) => {
                                     </Text>
                                 </View>
                                 <View style={flatListStyles.personParams}>
-                                    <Text style={flatListStyles.textParams}>
-                                        {formatPhoneNumberBack(item.phoneNumber)}
-                                    </Text>
+                                     <Distance MainUserLatitude={mainUser.latitude} MainUserLongitude={mainUser.longitude}
+                                               MemberLatitude={item.latitude} MemberLongitude={item.longitude}/>
                                 </View>
                                 <View style={flatListStyles.personParams}>
-                                    <Text style={flatListStyles.textParams}>
-                                        {item.distance}km
-                                    </Text>
-                                </View>
-                                <View style={flatListStyles.personParams}>
-                                    <Text style={flatListStyles.textParams}>
-                                        lat:{item.latitude}
-                                        lon:{item.longitude}
-                                    </Text>
+                                    <Timestamp MemberTimestamp={item.timestamp}/>
                                 </View>
                                 <View style={flatListStyles.personParams}>
                                     <TouchableOpacity onPress={() => deleteMemberHandler(item.phoneNumber)}>

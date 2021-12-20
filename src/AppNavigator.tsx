@@ -9,8 +9,6 @@ import {Provider} from "react-redux";
 import { store } from "./store/configStore";
 import { LogBox } from 'react-native';
 
-
-
 const Stack = createStackNavigator();
 LogBox.ignoreAllLogs();
 
@@ -31,7 +29,7 @@ const AppNavigator = () => {
     return (
         <Provider store={store}>
             <NavigationContainer linking={linking}>
-                <Stack.Navigator initialRouteName="LoginScreen">
+                <Stack.Navigator initialRouteName="HomeScreen">
                     <Stack.Screen options={{ headerShown: false }} name="SignUpScreen" component={SignUpScreen}/>
                     <Stack.Screen options={{ headerShown: false }} name="LoginScreen" component={LoginScreen}/>
                     <Stack.Screen name="HomeScreen" component={HomeScreen}
